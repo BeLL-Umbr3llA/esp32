@@ -45,10 +45,13 @@ app.use(async (req, res, next) => {
     next();
 });
 
-// 3. MongoDB Schema & Model Configuration
+// 3. MongoDB Schema & Model Configuration (Refined Schema)
 const esp32GroupSchema = new mongoose.Schema({
     group_data: {
-        strings: { type: mongoose.Schema.Types.Mixed },
+        strings: {
+            class: { type: String, required: true, default: 'unknown' },
+            confidence: { type: Number, required: true, default: 0 }
+        },
         image: {
             url: { type: String, default: null },
             public_id: { type: String, default: null }
@@ -105,17 +108,23 @@ app.post('/upload', (req, res) => {
         try {
             console.log(`\n[${new Date().toLocaleString()}] 📥 Incoming Request from ESP32`);
 
-            // A. Process JSON / String Payload
-            let stringsData = {};
+            // A. Process Processed JSON Data (class & confidence)
+            let parsedData = {};
             if (req.body && req.body.json_data) {
                 try {
-                    stringsData = typeof req.body.json_data === 'string'
+                    parsedData = typeof req.body.json_data === 'string'
                         ? JSON.parse(req.body.json_data)
                         : req.body.json_data;
                 } catch (pErr) {
-                    stringsData = { raw_text: req.body.json_data };
+                    console.error('⚠️ JSON Parsing Failed:', pErr.message);
                 }
             }
+
+            // Extract specific fields with fallback values
+            const detectedClass = parsedData.class || 'unknown';
+            const detectedConfidence = Number(parsedData.confidence) || 0;
+
+            console.log(`🏷️ Class: ${detectedClass} | 🎯 Confidence: ${detectedConfidence}%`);
 
             // B. Cloudinary Image Stream Handling
             let imageUrl = null;
@@ -142,15 +151,18 @@ app.post('/upload', (req, res) => {
                 publicId = cloudResult.public_id;
             }
 
-            // C. Time Formatting
+            // C. Time Formatting (Myanmar Time / Server Local Time)
             const now = new Date();
-            const formattedDate = now.toLocaleDateString('sv-SE');
-            const formattedTime = now.toLocaleTimeString();
+            const formattedDate = now.toLocaleDateString('sv-SE'); // Format: YYYY-MM-DD
+            const formattedTime = now.toLocaleTimeString();       // Format: HH:MM:SS AM/PM
 
-            // D. Save to Database
+            // D. Save Structured Data to Database
             const newGroupRecord = new ESP32GroupData({
                 group_data: {
-                    strings: stringsData,
+                    strings: {
+                        class: detectedClass,
+                        confidence: detectedConfidence
+                    },
                     image: {
                         url: imageUrl,
                         public_id: publicId
@@ -164,13 +176,17 @@ app.post('/upload', (req, res) => {
             });
 
             await newGroupRecord.save();
-            console.log('💾 Group Data & Image metadata stored in MongoDB!');
+            console.log('💾 Clean Structured Data & Image metadata saved successfully!');
 
             return res.status(200).json({
                 status: 'success',
-                message: 'String data and Image stored together successfully.',
+                message: 'Data saved successfully.',
                 dataId: newGroupRecord._id,
-                imageUrl: imageUrl,
+                savedData: {
+                    class: detectedClass,
+                    confidence: detectedConfidence,
+                    imageUrl: imageUrl
+                },
                 savedAt: {
                     date: formattedDate,
                     time: formattedTime

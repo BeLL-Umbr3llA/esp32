@@ -14,10 +14,41 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// 2. MongoDB Schema & Model Configuration
+// 2. Database Connection Handling for Vercel Serverless
+const mongoURI = process.env.MONGODB_URI;
+
+if (!mongoURI) {
+    console.error('❌ MONGODB_URI is missing in environment variables!');
+}
+
+let isConnected = false;
+const connectDB = async () => {
+    if (isConnected || mongoose.connection.readyState === 1) {
+        isConnected = true;
+        return;
+    }
+    try {
+        await mongoose.connect(mongoURI, {
+            serverSelectionTimeoutMS: 5000,
+            family: 4
+        });
+        isConnected = true;
+        console.log('🍃 Connected to MongoDB Atlas Successfully!');
+    } catch (err) {
+        console.error('❌ MongoDB Atlas Connection Failed:', err.message);
+    }
+};
+
+// Middleware to ensure DB connection on every Vercel request
+app.use(async (req, res, next) => {
+    await connectDB();
+    next();
+});
+
+// 3. MongoDB Schema & Model Configuration
 const esp32GroupSchema = new mongoose.Schema({
     group_data: {
-        strings: { type: mongoose.Schema.Types.Mixed }, // Dynamic JSON or Raw Text
+        strings: { type: mongoose.Schema.Types.Mixed },
         image: {
             url: { type: String, default: null },
             public_id: { type: String, default: null }
@@ -25,22 +56,21 @@ const esp32GroupSchema = new mongoose.Schema({
     },
     timestamp: {
         iso_time: { type: Date, default: Date.now },
-        date: { type: String }, // YYYY-MM-DD
-        time: { type: String }  // HH:MM:SS AM/PM
+        date: { type: String },
+        time: { type: String }
     }
 });
 
-// Indexing for faster query execution by date/time
 esp32GroupSchema.index({ "timestamp.iso_time": -1 });
 esp32GroupSchema.index({ "timestamp.date": 1 });
 
-const ESP32GroupData = mongoose.model('ESP32GroupData', esp32GroupSchema);
+const ESP32GroupData = mongoose.models.ESP32GroupData || mongoose.model('ESP32GroupData', esp32GroupSchema);
 
-// 3. Multer Setup (In-Memory Buffer Storage)
+// 4. Multer Setup
 const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 10 * 1024 * 1024 } // 10MB Limit
+    limits: { fileSize: 10 * 1024 * 1024 }
 });
 
 app.use(express.json());
@@ -51,7 +81,21 @@ const cpUpload = upload.fields([
     { name: 'json_data', maxCount: 1 }
 ]);
 
-// 4. ESP32 Data Upload Endpoint
+// 5. Routes Definition
+
+// Root Route (Server & DB Health Status)
+app.get('/', (req, res) => {
+    const dbState = mongoose.connection.readyState;
+    const states = { 0: 'Disconnected ❌', 1: 'Connected 🍃', 2: 'Connecting ⏳', 3: 'Disconnecting 🔄' };
+
+    res.status(200).json({
+        status: 'online',
+        message: 'ESP32 Backend Server is Running! 🚀',
+        database: states[dbState] || 'Unknown'
+    });
+});
+
+// ESP32 Data Upload Endpoint
 app.post('/upload', (req, res) => {
     cpUpload(req, res, async (err) => {
         if (err) {
@@ -98,12 +142,12 @@ app.post('/upload', (req, res) => {
                 publicId = cloudResult.public_id;
             }
 
-            // C. Formatted Local Time Creation
+            // C. Time Formatting
             const now = new Date();
-            const formattedDate = now.toLocaleDateString('sv-SE'); // Outputs YYYY-MM-DD
+            const formattedDate = now.toLocaleDateString('sv-SE');
             const formattedTime = now.toLocaleTimeString();
 
-            // D. Database Record Storage
+            // D. Save to Database
             const newGroupRecord = new ESP32GroupData({
                 group_data: {
                     strings: stringsData,
@@ -140,10 +184,10 @@ app.post('/upload', (req, res) => {
     });
 });
 
-// 5. Query Endpoint by Date
+// Query Endpoint by Date
 app.get('/data/by-date', async (req, res) => {
     try {
-        const { date } = req.query; // e.g. /data/by-date?date=2026-08-28
+        const { date } = req.query;
         if (!date) {
             return res.status(400).json({ status: 'error', message: 'Please provide date parameter (?date=YYYY-MM-DD)' });
         }
@@ -162,24 +206,12 @@ app.get('/data/by-date', async (req, res) => {
     }
 });
 
-// 6. Asynchronous Database Initializer & Express Bootstrapper
-const mongoURI = process.env.MONGODB_URI;
-
-if (mongoURI) {
-    mongoose.connect(mongoURI, {
-        serverSelectionTimeoutMS: 5000,
-        family: 4
-    })
-    .then(() => console.log('🍃 Connected to MongoDB Atlas Successfully!'))
-    .catch(err => console.error('❌ MongoDB Atlas Connection Failed:', err.message));
-}
-
-// Local မှာ run ရင် app.listen အလုပ်လုပ်မည်
+// Local Development Server Listener
 if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, '0.0.0.0', () => {
         console.log(`🚀 Node.js Server listening on port ${PORT}`);
     });
 }
 
-// Vercel Serverless အတွက် Export လုပ်ပေးရန်
+// 6. Export app for Vercel Serverless Function
 module.exports = app;

@@ -67,7 +67,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } });
 const cpUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'json_data', maxCount: 1 }]);
 
-// ESP32 Upload Endpoint
+// ESP32 Upload Endpoint (မြန်မာစံတော်ချိန်ဖြင့် သိမ်းဆည်းရန် ပြင်ဆင်ထားပါသည်)
 app.post('/upload', (req, res) => {
     cpUpload(req, res, async (err) => {
         if (err) return res.status(400).json({ status: 'error', message: err.message });
@@ -99,16 +99,32 @@ app.post('/upload', (req, res) => {
                 publicId = cloudResult.public_id;
             }
 
+            // --- မြန်မာစံတော်ချိန် (Asia/Yangon - UTC+6:30) တွက်ချက်ခြင်း ---
             const now = new Date();
-            const formattedDate = now.toLocaleDateString('sv-SE');
-            const formattedTime = now.toLocaleTimeString();
+            const mmTime = new Date(now.getTime() + (6.5 * 60 * 60 * 1000));
+
+            // ရက်စွဲ YYYY-MM-DD ပုံစံထုတ်ခြင်း
+            const formattedDate = mmTime.toISOString().split('T')[0];
+
+            // အချိန် hh:mm:ss AM/PM ပုံစံထုတ်ခြင်း
+            const formattedTime = mmTime.toLocaleTimeString('en-US', {
+                timeZone: 'UTC',
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
 
             const newRecord = new ESP32GroupData({
                 group_data: {
                     strings: { class: detectedClass, confidence: detectedConfidence },
                     image: { url: imageUrl, public_id: publicId }
                 },
-                timestamp: { iso_time: now, date: formattedDate, time: formattedTime }
+                timestamp: { 
+                    iso_time: now,       // Database Filter များအတွက် UTC အတိုင်းထားမည်
+                    date: formattedDate, // မြန်မာစံတော်ချိန် ရက်စွဲ
+                    time: formattedTime  // မြန်မာစံတော်ချိန် အချိန်
+                }
             });
 
             await newRecord.save();
@@ -119,15 +135,29 @@ app.post('/upload', (req, res) => {
     });
 });
 
-// Full Dashboard Analytics API
+// Full Dashboard Analytics API (မြန်မာစံတော်ချိန်အတိုင်း Filter စစ်ပေးမည်)
 app.get('/api/dashboard/summary', async (req, res) => {
     try {
         const { range } = req.query; // 'day', 'week', 'month'
-        let startDate = new Date();
+        
+        const now = new Date();
+        const mmNow = new Date(now.getTime() + (6.5 * 60 * 60 * 1000));
+        let startDate;
 
-        if (range === 'week') startDate.setDate(startDate.getDate() - 7);
-        else if (range === 'month') startDate.setMonth(startDate.getMonth() - 1);
-        else startDate.setHours(0, 0, 0, 0);
+        if (range === 'week') {
+            startDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
+        } else if (range === 'month') {
+            startDate = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+        } else {
+            // Day Filter: မြန်မာစံတော်ချိန် ယနေ့ 00:00:00 မှ စတင်တွက်ချက်ခြင်း
+            const mmTodayStart = new Date(Date.UTC(
+                mmNow.getUTCFullYear(),
+                mmNow.getUTCMonth(),
+                mmNow.getUTCDate(),
+                0, 0, 0
+            ));
+            startDate = new Date(mmTodayStart.getTime() - (6.5 * 60 * 60 * 1000));
+        }
 
         const records = await ESP32GroupData.find({ "timestamp.iso_time": { $gte: startDate } }).sort({ "timestamp.iso_time": -1 });
         const latestRecord = await ESP32GroupData.findOne().sort({ "timestamp.iso_time": -1 });

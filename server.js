@@ -162,28 +162,24 @@ app.get('/data/by-date', async (req, res) => {
     }
 });
 
-
 // 6. Asynchronous Database Initializer & Express Bootstrapper
 const mongoURI = process.env.MONGODB_URI;
 
-if (!mongoURI) {
-    console.error('❌ MONGODB_URI is missing in .env file!');
-    process.exit(1);
+if (mongoURI) {
+    mongoose.connect(mongoURI, {
+        serverSelectionTimeoutMS: 5000,
+        family: 4
+    })
+    .then(() => console.log('🍃 Connected to MongoDB Atlas Successfully!'))
+    .catch(err => console.error('❌ MongoDB Atlas Connection Failed:', err.message));
 }
 
-mongoose.connect(mongoURI, {
-    serverSelectionTimeoutMS: 10000, // Timeout 10s ပေးမည်
-    family: 4,                        // IPv4 ကို အတင်းသုံးခိုင်းမည်
-    directConnection: false           // Replica Set Auto-discovery ကို ဖွင့်မည်
-})
-.then(() => {
-    console.log('🍃 Connected to MongoDB Atlas Successfully!');
+// Local မှာ run ရင် app.listen အလုပ်လုပ်မည်
+if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, '0.0.0.0', () => {
         console.log(`🚀 Node.js Server listening on port ${PORT}`);
     });
-})
-.catch(err => {
-    console.error('❌ MongoDB Atlas Connection Failed!');
-    console.error('Reason:', err.message);
-    process.exit(1);
-});
+}
+
+// Vercel Serverless အတွက် Export လုပ်ပေးရန်
+module.exports = app;

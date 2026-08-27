@@ -3,13 +3,15 @@ const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
 const cloudinary = require('cloudinary').v2;
-const { GoogleGenAI } = require('@google/genai');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 1. Gemini API Setup
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// 1. Static Middleware & View Engine Setup
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // 2. Cloudinary Setup
 cloudinary.config({
@@ -18,18 +20,22 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// 3. Database Connection Handling
+// 3. Database Connection (Vercel Ready)
 const mongoURI = process.env.MONGODB_URI;
 let isConnected = false;
+
 const connectDB = async () => {
     if (isConnected || mongoose.connection.readyState === 1) {
         isConnected = true;
         return;
     }
     try {
-        await mongoose.connect(mongoURI, { serverSelectionTimeoutMS: 5000, family: 4 });
+        await mongoose.connect(mongoURI, {
+            serverSelectionTimeoutMS: 5000,
+            family: 4
+        });
         isConnected = true;
-        console.log('🍃 Connected to MongoDB Atlas Successfully!');
+        console.log('🍃 MongoDB Atlas Connected.');
     } catch (err) {
         console.error('❌ MongoDB Connection Error:', err.message);
     }
@@ -40,13 +46,12 @@ app.use(async (req, res, next) => {
     next();
 });
 
-// 4. Schema (ESP32 Data + Gemini Verification)
+// 4. Schema Definition
 const esp32GroupSchema = new mongoose.Schema({
     group_data: {
         strings: {
-            class: { type: String, required: true },       // ESP32 က ပို့လိုက်သည့် class
-            confidence: { type: Number, required: true },  // ESP32 က ပို့လိုက်သည့် confidence
-            is_correct: { type: Boolean, required: true }  // Gemini က စစ်ပေးသည့် True/False
+            class: { type: String, required: true, default: 'unknown' },
+            confidence: { type: Number, required: true, default: 0 }
         },
         image: {
             url: { type: String, default: null },
@@ -60,156 +65,111 @@ const esp32GroupSchema = new mongoose.Schema({
     }
 });
 
+esp32GroupSchema.index({ "timestamp.iso_time": -1 });
+esp32GroupSchema.index({ "timestamp.date": 1 });
+
 const ESP32GroupData = mongoose.models.ESP32GroupData || mongoose.model('ESP32GroupData', esp32GroupSchema);
 
+// Multer Config
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } });
+const cpUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'json_data', maxCount: 1 }]);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-const cpUpload = upload.fields([
-    { name: 'image', maxCount: 1 },
-    { name: 'json_data', maxCount: 1 }
-]);
-
-// 5. Gemini Image Verification Helper
-async function verifyImageWithGemini(imageBuffer, esp32Class) {
-    try {
-        const prompt = `
-        Look at this image. Is this object a "${esp32Class}"?
-        Reply strictly with JSON format without markdown blocks:
-        {
-            "is_correct": true or false
-        }`;
-
-        const response = await ai.models.generateContent({
-            model: 'gemini-1.5-flash',
-            contents: [
-                prompt,
-                {
-                    inlineData: {
-                        mimeType: 'image/jpeg',
-                        data: imageBuffer.toString('base64')
-                    }
-                }
-            ],
-            config: {
-                responseMimeType: "application/json"
-            }
-        });
-
-        const resJson = JSON.parse(response.text.trim());
-        return resJson.is_correct === true;
-    } catch (error) {
-        console.error('⚠️ Gemini Verification Failed:', error.message);
-        return false;
-    }
-}
-
-// 6. Routes
-app.get('/', (req, res) => {
-    res.status(200).json({ status: 'online', message: 'ESP32 Server Ready! 🚀' });
-});
-
+// 5. ESP32 Data Upload Endpoint
 app.post('/upload', (req, res) => {
     cpUpload(req, res, async (err) => {
         if (err) return res.status(400).json({ status: 'error', message: err.message });
 
         try {
-            console.log(`\n[${new Date().toLocaleString()}] 📥 Incoming Upload Request`);
-
-            // A. ESP32 Data ရယူခြင်း
             let parsedData = {};
             if (req.body && req.body.json_data) {
                 try {
-                    parsedData = typeof req.body.json_data === 'string'
-                        ? JSON.parse(req.body.json_data)
-                        : req.body.json_data;
-                } catch (pErr) {
-                    console.error('⚠️ JSON Parse Error:', pErr.message);
-                }
+                    parsedData = typeof req.body.json_data === 'string' ? JSON.parse(req.body.json_data) : req.body.json_data;
+                } catch (pErr) { console.error('JSON Error:', pErr.message); }
             }
 
-            const esp32Class = parsedData.class || 'unknown';
-            const esp32Confidence = Number(parsedData.confidence) || 0;
+            const detectedClass = parsedData.class || 'unknown';
+            const detectedConfidence = Number(parsedData.confidence) || 0;
 
-            const imageFile = req.files && req.files['image'] ? req.files['image'][0] : null;
             let imageUrl = null;
             let publicId = null;
-            let isCorrect = false;
+            const imageFile = req.files && req.files['image'] ? req.files['image'][0] : null;
 
             if (imageFile) {
-                // Cloudinary Upload
-                const uploadToCloudinary = () => {
-                    return new Promise((resolve, reject) => {
-                        const stream = cloudinary.uploader.upload_stream(
-                            { folder: 'esp32_captures' },
-                            (error, result) => {
-                                if (error) return reject(error);
-                                resolve(result);
-                            }
-                        );
-                        stream.end(imageFile.buffer);
+                const cloudResult = await new Promise((resolve, reject) => {
+                    const stream = cloudinary.uploader.upload_stream({ folder: 'esp32_captures' }, (error, result) => {
+                        if (error) return reject(error);
+                        resolve(result);
                     });
-                };
-
-                const cloudResult = await uploadToCloudinary();
+                    stream.end(imageFile.buffer);
+                });
                 imageUrl = cloudResult.secure_url;
                 publicId = cloudResult.public_id;
-
-                // Gemini Verification (ESP32 ရဲ့ Class နဲ့ တိုက်စစ်ခြင်း)
-                console.log(`🤖 Gemini Verifying if image matches: "${esp32Class}"...`);
-                isCorrect = await verifyImageWithGemini(imageFile.buffer, esp32Class);
-                console.log(`🎯 Verification Result: ${isCorrect ? '✅ MATCHED (true)' : '❌ MISMATCHED (false)'}`);
             }
 
-            // B. Database ထဲသိမ်းဆည်းခြင်း (ESP32 Data + Gemini's is_correct)
             const now = new Date();
             const formattedDate = now.toLocaleDateString('sv-SE');
             const formattedTime = now.toLocaleTimeString();
 
             const newRecord = new ESP32GroupData({
                 group_data: {
-                    strings: {
-                        class: esp32Class,
-                        confidence: esp32Confidence,
-                        is_correct: isCorrect
-                    },
-                    image: {
-                        url: imageUrl,
-                        public_id: publicId
-                    }
+                    strings: { class: detectedClass, confidence: detectedConfidence },
+                    image: { url: imageUrl, public_id: publicId }
                 },
-                timestamp: {
-                    iso_time: now,
-                    date: formattedDate,
-                    time: formattedTime
-                }
+                timestamp: { iso_time: now, date: formattedDate, time: formattedTime }
             });
 
             await newRecord.save();
-            console.log('💾 Record successfully saved to MongoDB!');
-
-            return res.status(200).json({
-                status: 'success',
-                savedData: {
-                    class: esp32Class,
-                    confidence: esp32Confidence,
-                    is_correct: isCorrect,
-                    imageUrl: imageUrl
-                }
-            });
-
+            return res.status(200).json({ status: 'success', message: 'Data logged successfully.' });
         } catch (error) {
-            console.error('❌ Server Internal Error:', error);
             return res.status(500).json({ status: 'error', message: error.message });
         }
     });
 });
 
+// 6. Analytics API Routes for Dashboard
+app.get('/api/dashboard/summary', async (req, res) => {
+    try {
+        const { range } = req.query; // 'day', 'week', 'month'
+        let startDate = new Date();
+
+        if (range === 'week') startDate.setDate(startDate.getDate() - 7);
+        else if (range === 'month') startDate.setMonth(startDate.getMonth() - 1);
+        else startDate.setHours(0, 0, 0, 0); // 'day'
+
+        const records = await ESP32GroupData.find({ "timestamp.iso_time": { $gte: startDate } }).sort({ "timestamp.iso_time": -1 });
+        const latestRecord = await ESP32GroupData.findOne().sort({ "timestamp.iso_time": -1 });
+
+        // Calculate Class Distribution
+        const classCounts = {};
+        let totalConfidence = 0;
+
+        records.forEach(r => {
+            const cName = r.group_data.strings.class;
+            classCounts[cName] = (classCounts[cName] || 0) + 1;
+            totalConfidence += r.group_data.strings.confidence;
+        });
+
+        const totalObjects = records.length;
+        const avgConfidence = totalObjects > 0 ? (totalConfidence / totalObjects).toFixed(1) : 0;
+
+        return res.status(200).json({
+            status: 'success',
+            summary: {
+                totalObjects,
+                avgConfidence,
+                classCounts,
+                latestRecord,
+                records
+            }
+        });
+    } catch (err) {
+        return res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+
 if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));
+    app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Dashboard Server on port ${PORT}`));
 }
 
 module.exports = app;

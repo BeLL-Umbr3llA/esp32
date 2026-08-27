@@ -8,19 +8,16 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve static UI assets from public folder
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Cloudinary Configuration
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// MongoDB Connection with Serverless Optimization
 const mongoURI = process.env.MONGODB_URI;
 let isConnected = false;
 
@@ -30,14 +27,11 @@ const connectDB = async () => {
         return;
     }
     try {
-        await mongoose.connect(mongoURI, {
-            serverSelectionTimeoutMS: 5000,
-            family: 4
-        });
+        await mongoose.connect(mongoURI, { serverSelectionTimeoutMS: 5000, family: 4 });
         isConnected = true;
-        console.log('🍃 Connected to MongoDB Atlas Successfully!');
+        console.log('🍃 Connected to MongoDB Atlas');
     } catch (err) {
-        console.error('❌ MongoDB Connection Error:', err.message);
+        console.error('❌ Database Connection Error:', err.message);
     }
 };
 
@@ -46,7 +40,6 @@ app.use(async (req, res, next) => {
     next();
 });
 
-// Mongoose Schema Configuration
 const esp32GroupSchema = new mongoose.Schema({
     group_data: {
         strings: {
@@ -70,12 +63,11 @@ esp32GroupSchema.index({ "timestamp.date": 1 });
 
 const ESP32GroupData = mongoose.models.ESP32GroupData || mongoose.model('ESP32GroupData', esp32GroupSchema);
 
-// Multer Storage Configuration
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } });
 const cpUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'json_data', maxCount: 1 }]);
 
-// ESP32 Data Ingestion Endpoint
+// ESP32 Upload Endpoint
 app.post('/upload', (req, res) => {
     cpUpload(req, res, async (err) => {
         if (err) return res.status(400).json({ status: 'error', message: err.message });
@@ -85,7 +77,7 @@ app.post('/upload', (req, res) => {
             if (req.body && req.body.json_data) {
                 try {
                     parsedData = typeof req.body.json_data === 'string' ? JSON.parse(req.body.json_data) : req.body.json_data;
-                } catch (pErr) { console.error('JSON Error:', pErr.message); }
+                } catch (pErr) { console.error('JSON Parse Error:', pErr.message); }
             }
 
             const detectedClass = parsedData.class || 'unknown';
@@ -127,7 +119,7 @@ app.post('/upload', (req, res) => {
     });
 });
 
-// Analytics Summary API Endpoint
+// Full Dashboard Analytics API
 app.get('/api/dashboard/summary', async (req, res) => {
     try {
         const { range } = req.query; // 'day', 'week', 'month'
@@ -135,30 +127,41 @@ app.get('/api/dashboard/summary', async (req, res) => {
 
         if (range === 'week') startDate.setDate(startDate.getDate() - 7);
         else if (range === 'month') startDate.setMonth(startDate.getMonth() - 1);
-        else startDate.setHours(0, 0, 0, 0); // Default to Today
+        else startDate.setHours(0, 0, 0, 0);
 
         const records = await ESP32GroupData.find({ "timestamp.iso_time": { $gte: startDate } }).sort({ "timestamp.iso_time": -1 });
         const latestRecord = await ESP32GroupData.findOne().sort({ "timestamp.iso_time": -1 });
 
         const classCounts = {};
         let totalConfidence = 0;
+        const misclassifications = [];
 
         records.forEach(r => {
             const cName = r.group_data.strings.class;
+            const conf = r.group_data.strings.confidence;
+
             classCounts[cName] = (classCounts[cName] || 0) + 1;
-            totalConfidence += r.group_data.strings.confidence;
+            totalConfidence += conf;
+
+            // Misclassification Threshold: Confidence < 70% or class 'unknown'
+            if (conf < 70 || cName.toLowerCase() === 'unknown') {
+                misclassifications.push(r);
+            }
         });
 
         const totalObjects = records.length;
         const avgConfidence = totalObjects > 0 ? (totalConfidence / totalObjects).toFixed(1) : 0;
+        const misclassCount = misclassifications.length;
 
         return res.status(200).json({
             status: 'success',
             summary: {
                 totalObjects,
                 avgConfidence,
+                misclassCount,
                 classCounts,
                 latestRecord,
+                misclassifications,
                 records
             }
         });
@@ -168,7 +171,7 @@ app.get('/api/dashboard/summary', async (req, res) => {
 });
 
 if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Control Center Active on Port ${PORT}`));
+    app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Dashboard server active at http://localhost:${PORT}`));
 }
 
 module.exports = app;

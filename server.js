@@ -8,19 +8,19 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 1. Static Middleware & View Engine Setup
+// Serve static UI assets from public folder
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 2. Cloudinary Setup
+// Cloudinary Configuration
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// 3. Database Connection (Vercel Ready)
+// MongoDB Connection with Serverless Optimization
 const mongoURI = process.env.MONGODB_URI;
 let isConnected = false;
 
@@ -35,7 +35,7 @@ const connectDB = async () => {
             family: 4
         });
         isConnected = true;
-        console.log('🍃 MongoDB Atlas Connected.');
+        console.log('🍃 Connected to MongoDB Atlas Successfully!');
     } catch (err) {
         console.error('❌ MongoDB Connection Error:', err.message);
     }
@@ -46,7 +46,7 @@ app.use(async (req, res, next) => {
     next();
 });
 
-// 4. Schema Definition
+// Mongoose Schema Configuration
 const esp32GroupSchema = new mongoose.Schema({
     group_data: {
         strings: {
@@ -70,12 +70,12 @@ esp32GroupSchema.index({ "timestamp.date": 1 });
 
 const ESP32GroupData = mongoose.models.ESP32GroupData || mongoose.model('ESP32GroupData', esp32GroupSchema);
 
-// Multer Config
+// Multer Storage Configuration
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } });
 const cpUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'json_data', maxCount: 1 }]);
 
-// 5. ESP32 Data Upload Endpoint
+// ESP32 Data Ingestion Endpoint
 app.post('/upload', (req, res) => {
     cpUpload(req, res, async (err) => {
         if (err) return res.status(400).json({ status: 'error', message: err.message });
@@ -127,7 +127,7 @@ app.post('/upload', (req, res) => {
     });
 });
 
-// 6. Analytics API Routes for Dashboard
+// Analytics Summary API Endpoint
 app.get('/api/dashboard/summary', async (req, res) => {
     try {
         const { range } = req.query; // 'day', 'week', 'month'
@@ -135,12 +135,11 @@ app.get('/api/dashboard/summary', async (req, res) => {
 
         if (range === 'week') startDate.setDate(startDate.getDate() - 7);
         else if (range === 'month') startDate.setMonth(startDate.getMonth() - 1);
-        else startDate.setHours(0, 0, 0, 0); // 'day'
+        else startDate.setHours(0, 0, 0, 0); // Default to Today
 
         const records = await ESP32GroupData.find({ "timestamp.iso_time": { $gte: startDate } }).sort({ "timestamp.iso_time": -1 });
         const latestRecord = await ESP32GroupData.findOne().sort({ "timestamp.iso_time": -1 });
 
-        // Calculate Class Distribution
         const classCounts = {};
         let totalConfidence = 0;
 
@@ -169,7 +168,7 @@ app.get('/api/dashboard/summary', async (req, res) => {
 });
 
 if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Dashboard Server on port ${PORT}`));
+    app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Control Center Active on Port ${PORT}`));
 }
 
 module.exports = app;

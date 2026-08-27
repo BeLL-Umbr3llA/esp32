@@ -22,15 +22,16 @@
     <!-- Left Navigation Sidebar -->
     <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 fixed md:relative inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out">
         <div>
-            <!-- Brand Logo -->
+            <!-- Brand Logo (ပြင်ဆင်ထားသော စာသား ၁) -->
             <div class="h-16 px-6 border-b border-slate-100 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-200">
                         <i class="fa-solid fa-microchip text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-base font-bold text-slate-800 tracking-tight">SoftMaterial</h1>
-                        <p class="text-[11px] text-slate-400 font-medium">TinyML Robotic Arm</p>
+                        <!-- Title နာမည် ပြောင်းလဲထားသည် -->
+                        <h1 class="text-base font-bold text-slate-800 tracking-tight">Smart Sorting</h1>
+                        <p class="text-[11px] text-slate-400 font-medium">IoT & Control System</p>
                     </div>
                 </div>
                 <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-slate-600">
@@ -69,15 +70,16 @@
             </div>
         </div>
 
-        <!-- System User Status -->
+        <!-- System User Status (ပြင်ဆင်ထားသော စာသား ၂) -->
         <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center gap-3">
             <div class="w-9 h-9 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs">
-                EA
+                EC
             </div>
             <div class="overflow-hidden">
-                <p class="text-xs font-bold text-slate-800 truncate">Engineering Thesis</p>
+                <!-- User Profile / Project Name ပြောင်းလဲထားသည် -->
+                <p class="text-xs font-bold text-slate-800 truncate">Control Engineering</p>
                 <p class="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> System Active
                 </p>
             </div>
         </div>
@@ -86,13 +88,14 @@
     <!-- Main Wrapper -->
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-        <!-- Top Header Navigation -->
+        <!-- Top Header Navigation (ပြင်ဆင်ထားသော စာသား ၃) -->
         <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden text-slate-600 p-2 rounded-lg hover:bg-slate-100">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
-                <h2 id="page-title" class="text-sm md:text-base font-bold text-slate-800">Dashboard <span class="text-xs font-normal text-slate-400">Control Panel</span></h2>
+                <!-- Top Header Title ပြောင်းလဲထားသည် -->
+                <h2 id="page-title" class="text-sm md:text-base font-bold text-slate-800">Sorting Monitor <span class="text-xs font-normal text-slate-400">Live Control</span></h2>
             </div>
 
             <!-- Top Header Right Actions -->
@@ -127,7 +130,7 @@
             <!-- TAB 1: OVERVIEW SCREEN -->
             <section id="tab-overview" class="space-y-6">
 
-                <!-- 4 Top Stat Cards (Matching UI Sample) -->
+                <!-- 4 Top Stat Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <!-- Total Processed Card -->
                     <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">

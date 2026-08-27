@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyML Sorting Dashboard | Thesis Project</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen">
+
+    <!-- Header Section -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="text-xs font-semibold tracking-widest text-emerald-400 uppercase">Engineering Thesis Dashboard</span>
+                <h1 class="text-xl font-bold text-white tracking-tight">Design & Implementation of Object Classification and Sorting System with Robotic Arm using TinyML</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping mr-2"></span> System Live
+                </span>
+                <button onclick="fetchDashboardData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs rounded border border-slate-700 transition">
+                    <i class="fa-solid fa-rotate mr-1"></i> Refresh
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-6 py-8 space-y-6">
+
+        <!-- Timeframe Filter Controls -->
+        <div class="flex justify-between items-center bg-slate-900 p-2 rounded-lg border border-slate-800">
+            <span class="text-sm font-medium text-slate-400 ml-2"><i class="fa-solid fa-filter mr-2"></i> Analytics Range:</span>
+            <div class="flex gap-2">
+                <button onclick="setFilter('day')" id="btn-day" class="px-4 py-1.5 text-xs font-semibold rounded-md bg-emerald-600 text-white shadow">Today</button>
+                <button onclick="setFilter('week')" id="btn-week" class="px-4 py-1.5 text-xs font-semibold rounded-md bg-slate-800 text-slate-300 hover:bg-slate-700">Weekly</button>
+                <button onclick="setFilter('month')" id="btn-month" class="px-4 py-1.5 text-xs font-semibold rounded-md bg-slate-800 text-slate-300 hover:bg-slate-700">Monthly</button>
+            </div>
+        </div>
+
+        <!-- Metric Overview Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center gap-4">
+                <div class="p-3 bg-blue-500/10 text-blue-400 rounded-lg border border-blue-500/20"><i class="fa-solid fa-boxes-stacked text-2xl"></i></div>
+                <div>
+                    <p class="text-xs text-slate-400 uppercase font-semibold">Total Sorted Objects</p>
+                    <h3 id="stat-total" class="text-2xl font-extrabold text-white">0</h3>
+                </div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center gap-4">
+                <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20"><i class="fa-solid fa-bullseye text-2xl"></i></div>
+                <div>
+                    <p class="text-xs text-slate-400 uppercase font-semibold">Average TinyML Confidence</p>
+                    <h3 id="stat-confidence" class="text-2xl font-extrabold text-white">0%</h3>
+                </div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center gap-4">
+                <div class="p-3 bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/20"><i class="fa-solid fa-layer-group text-2xl"></i></div>
+                <div>
+                    <p class="text-xs text-slate-400 uppercase font-semibold">Unique Object Classes</p>
+                    <h3 id="stat-classes" class="text-2xl font-extrabold text-white">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest Inference & Analytics Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Latest Captured Frame -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+                <div>
+                    <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-camera text-emerald-400"></i> Latest Realtime Capture
+                    </h2>
+                    <div class="relative w-full h-56 bg-slate-950 rounded-lg overflow-hidden border border-slate-800 flex items-center justify-center">
+                        <img id="latest-image" src="" alt="Latest Capture" class="w-full h-full object-cover hidden">
+                        <div id="image-placeholder" class="text-center text-slate-600">
+                            <i class="fa-solid fa-image text-3xl mb-2"></i>
+                            <p class="text-xs">Waiting for ESP32 Capture...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-slate-800 space-y-2">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-400">Class Label:</span>
+                        <span id="latest-class" class="font-bold text-emerald-400">N/A</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-400">Model Confidence:</span>
+                        <span id="latest-confidence" class="font-bold text-blue-400">N/A</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-400">Timestamp:</span>
+                        <span id="latest-time" class="text-slate-300">N/A</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Object Classification Chart -->
+            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-5">
+                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-emerald-400"></i> Object Distribution Analytics
+                </h2>
+                <div class="h-64 relative">
+                    <canvas id="classChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sorting Records Data Table -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+            <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-emerald-400"></i> Recent Classification Logs
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-950 text-slate-400 uppercase border-b border-slate-800">
+                        <tr>
+                            <th class="p-3">Image Frame</th>
+                            <th class="p-3">Class Name</th>
+                            <th class="p-3">Confidence Score</th>
+                            <th class="p-3">Date</th>
+                            <th class="p-3">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-table-body" class="divide-y divide-slate-800/50">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

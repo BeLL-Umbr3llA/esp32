@@ -3,7 +3,7 @@ let selectedDate = null;
 let overviewChartInstance = null;
 let analyticsChartInstance = null;
 
-// Dynamic Modern Color Palette
+// Bar Chart အတွက် သုံးမည့် Dynamic Modern Color Palette
 const colorPalette = [
     { bg: 'rgba(99, 102, 241, 0.85)', border: '#4f46e5' },  // Indigo
     { bg: 'rgba(16, 185, 129, 0.85)', border: '#059669' },  // Emerald
@@ -12,6 +12,16 @@ const colorPalette = [
     { bg: 'rgba(6, 182, 212, 0.85)', border: '#0891b2' },   // Cyan
     { bg: 'rgba(168, 85, 247, 0.85)', border: '#9333ea' },  // Purple
     { bg: 'rgba(239, 68, 68, 0.85)', border: '#dc2626' }    // Red
+];
+
+// ပုံထဲမှ Pie Chart အရောင်များအတိုင်း သီးသန့် ပုံသေ သတ်မှတ်ထားသော Color Palette
+const colorPalettePie = [
+    { bg: '#8ca9d3', border: '#7290bd' }, // Soft Blue (30%)
+    { bg: '#a7d18c', border: '#8fb675' }, // Soft Sage Green (23%)
+    { bg: '#f4e06d', border: '#dec853' }, // Soft Pastel Yellow (18%)
+    { bg: '#f5c211', border: '#dcaa02' }, // Bright Amber (15%)
+    { bg: '#ca9200', border: '#ad7c00' }, // Dark Gold (9%)
+    { bg: '#c2c2c2', border: '#a8a8a8' }  // Light Grey (5%)
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -137,7 +147,7 @@ function updateLatestCapture(record) {
     document.getElementById('latest-time').innerText = `${record.timestamp.date} (${record.timestamp.time})`;
 }
 
-// Classification Distribution ကို Doughnut / Pie Chart လှလှလေးဖြင့် % ပါပြသရန် ပြင်ဆင်ထားသည့် Function
+// Classification Distribution ကို ပုံပါ အရောင်အတိုင်း Pie Chart ဖြင့် % ပြသပေးမည်
 function updateCharts(classCounts) {
     const labels = Object.keys(classCounts);
     const dataValues = Object.values(classCounts);
@@ -145,35 +155,38 @@ function updateCharts(classCounts) {
     // Total Count တွက်ချက်ခြင်း (%) ရာခိုင်နှုန်းအတွက်
     const totalCount = dataValues.reduce((a, b) => a + b, 0);
 
-    // Dynamic Color Setup per Item
-    const backgroundColors = labels.map((_, index) => colorPalette[index % colorPalette.length].bg);
-    const borderColors = labels.map((_, index) => colorPalette[index % colorPalette.length].border);
+    // Dynamic Multi-color setup for Bar Chart
+    const barBackgroundColors = labels.map((_, index) => colorPalette[index % colorPalette.length].bg);
+    const barBorderColors = labels.map((_, index) => colorPalette[index % colorPalette.length].border);
+
+    // Fixed Image Color setup for Pie Chart
+    const pieBackgroundColors = labels.map((_, index) => colorPalettePie[index % colorPalettePie.length].bg);
+    const pieBorderColors = labels.map((_, index) => colorPalettePie[index % colorPalettePie.length].border);
 
     // Register DataLabels Plugin
     if (typeof ChartDataLabels !== 'undefined') {
         Chart.register(ChartDataLabels);
     }
 
-    // 1. Overview Section - Modern Doughnut / Pie Chart
+    // 1. Overview Section - Pie Chart ( Image Color Palette )
     const ctx1 = document.getElementById('overviewChart').getContext('2d');
     if (overviewChartInstance) overviewChartInstance.destroy();
 
     overviewChartInstance = new Chart(ctx1, {
-        type: 'doughnut', // 'pie' ဟုလည်း ပြောင်းလဲသုံးစွဲနိုင်ပါသည်။
+        type: 'pie',
         data: {
             labels: labels,
             datasets: [{
                 data: dataValues,
-                backgroundColor: backgroundColors,
-                borderColor: '#ffffff',
-                borderWidth: 3,
-                hoverOffset: 8
+                backgroundColor: pieBackgroundColors,
+                borderColor: pieBorderColors,
+                borderWidth: 1,
+                hoverOffset: 6
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: '65%', // Clean Hollow Doughnut Look
             plugins: {
                 legend: {
                     display: true,
@@ -181,9 +194,9 @@ function updateCharts(classCounts) {
                     labels: {
                         usePointStyle: true,
                         pointStyle: 'circle',
-                        padding: 16,
+                        padding: 14,
                         font: { family: 'Plus Jakarta Sans', size: 12, weight: '600' },
-                        color: '#475569'
+                        color: '#334155'
                     }
                 },
                 tooltip: {
@@ -198,18 +211,18 @@ function updateCharts(classCounts) {
                         }
                     }
                 },
-                // Slice ပေါ်တွင် % ရာခိုင်နှုန်း စာသားတိုက်ရိုက်ပြသခြင်း
+                // Slice ပေါ်တွင် အနက်ရောင် % စာသား တိုက်ရိုက်ပြသခြင်း
                 datalabels: {
-                    color: '#ffffff',
+                    color: '#1e293b', // ပုံပါအတိုင်း အနက်ရောင် စာသား
                     font: {
                         family: 'Plus Jakarta Sans',
                         weight: 'bold',
-                        size: 12
+                        size: 13
                     },
                     formatter: (value) => {
                         if (totalCount === 0) return '0%';
-                        const percentage = ((value / totalCount) * 100).toFixed(1);
-                        return percentage > 3 ? `${percentage}%` : ''; // ရာခိုင်နှုန်း အရမ်းနည်းပါက မပြပါ
+                        const percentage = ((value / totalCount) * 100).toFixed(0); // ကိန်းပြည့် % သာပြမည်
+                        return percentage > 2 ? `${percentage}%` : '';
                     }
                 }
             }
@@ -227,8 +240,8 @@ function updateCharts(classCounts) {
             datasets: [{
                 label: 'Class Count',
                 data: dataValues,
-                backgroundColor: backgroundColors,
-                borderColor: borderColors,
+                backgroundColor: barBackgroundColors,
+                borderColor: barBorderColors,
                 borderWidth: 2,
                 borderRadius: 10,
                 borderSkipped: false
@@ -239,7 +252,7 @@ function updateCharts(classCounts) {
             maintainAspectRatio: false,
             plugins: { 
                 legend: { display: false },
-                datalabels: { display: false } // Bar Chart တွင် မလိုအပ်သောကြောင့် ပိတ်ထားသည်
+                datalabels: { display: false }
             },
             scales: {
                 y: { 

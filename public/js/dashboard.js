@@ -3,11 +3,11 @@ let selectedDate = null;
 let overviewChartInstance = null;
 let analyticsChartInstance = null;
 
-// Modern visually balanced color palette for dynamic charts
+// Dynamic Modern Color Palette
 const colorPalette = [
-    { bg: 'rgba(99, 102, 241, 0.85)', border: '#4f46e5' },  // Indigo (Relay)
-    { bg: 'rgba(16, 185, 129, 0.85)', border: '#059669' },  // Emerald (GasSensor)
-    { bg: 'rgba(245, 158, 11, 0.85)', border: '#d97706' },  // Amber (Ultrasonic)
+    { bg: 'rgba(99, 102, 241, 0.85)', border: '#4f46e5' },  // Indigo
+    { bg: 'rgba(16, 185, 129, 0.85)', border: '#059669' },  // Emerald
+    { bg: 'rgba(245, 158, 11, 0.85)', border: '#d97706' },  // Amber
     { bg: 'rgba(236, 72, 153, 0.85)', border: '#db2777' },  // Pink
     { bg: 'rgba(6, 182, 212, 0.85)', border: '#0891b2' },   // Cyan
     { bg: 'rgba(168, 85, 247, 0.85)', border: '#9333ea' },  // Purple
@@ -137,28 +137,29 @@ function updateLatestCapture(record) {
     document.getElementById('latest-time').innerText = `${record.timestamp.date} (${record.timestamp.time})`;
 }
 
+// Classification Distribution ကို Doughnut / Pie Chart လှလှလေးဖြင့် % ပါပြသရန် ပြင်ဆင်ထားသည့် Function
 function updateCharts(classCounts) {
     const labels = Object.keys(classCounts);
     const dataValues = Object.values(classCounts);
 
-    // Total Count တွက်ချက်ခြင်း (%) ရာခိုင်နှုန်းတွက်ရန်
+    // Total Count တွက်ချက်ခြင်း (%) ရာခိုင်နှုန်းအတွက်
     const totalCount = dataValues.reduce((a, b) => a + b, 0);
 
-    // Color Palette matching the layout theme
+    // Dynamic Color Setup per Item
     const backgroundColors = labels.map((_, index) => colorPalette[index % colorPalette.length].bg);
     const borderColors = labels.map((_, index) => colorPalette[index % colorPalette.length].border);
 
-    // DataLabels Plugin Registrations
+    // Register DataLabels Plugin
     if (typeof ChartDataLabels !== 'undefined') {
         Chart.register(ChartDataLabels);
     }
 
-    // 1. Overview Pie/Doughnut Chart with Percentage (%)
+    // 1. Overview Section - Modern Doughnut / Pie Chart
     const ctx1 = document.getElementById('overviewChart').getContext('2d');
     if (overviewChartInstance) overviewChartInstance.destroy();
 
     overviewChartInstance = new Chart(ctx1, {
-        type: 'doughnut', // Pie လိုချင်ပါက 'pie' ဟု ပြောင်းနိုင်ပါသည်
+        type: 'doughnut', // 'pie' ဟုလည်း ပြောင်းလဲသုံးစွဲနိုင်ပါသည်။
         data: {
             labels: labels,
             datasets: [{
@@ -172,7 +173,7 @@ function updateCharts(classCounts) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: '65%', // Doughnut အလယ်အပေါက်အရွယ်အစား (Pie သုံးပါက မလိုပါ)
+            cutout: '65%', // Clean Hollow Doughnut Look
             plugins: {
                 legend: {
                     display: true,
@@ -180,7 +181,7 @@ function updateCharts(classCounts) {
                     labels: {
                         usePointStyle: true,
                         pointStyle: 'circle',
-                        padding: 15,
+                        padding: 16,
                         font: { family: 'Plus Jakarta Sans', size: 12, weight: '600' },
                         color: '#475569'
                     }
@@ -197,7 +198,7 @@ function updateCharts(classCounts) {
                         }
                     }
                 },
-                // Slice ပေါ်တွင် % ပေါ်စေသည့် Plugin Config
+                // Slice ပေါ်တွင် % ရာခိုင်နှုန်း စာသားတိုက်ရိုက်ပြသခြင်း
                 datalabels: {
                     color: '#ffffff',
                     font: {
@@ -208,14 +209,14 @@ function updateCharts(classCounts) {
                     formatter: (value) => {
                         if (totalCount === 0) return '0%';
                         const percentage = ((value / totalCount) * 100).toFixed(1);
-                        return percentage > 4 ? `${percentage}%` : ''; // Space နည်းပါက မပြဘဲ ထားမည်
+                        return percentage > 3 ? `${percentage}%` : ''; // ရာခိုင်နှုန်း အရမ်းနည်းပါက မပြပါ
                     }
                 }
             }
         }
     });
 
-    // 2. Detailed Analytics Chart (Bar Chart အတိုင်းထားရှိခြင်း)
+    // 2. Detailed Analytics Tab Section - Bar Chart
     const ctx2 = document.getElementById('detailedAnalyticsChart').getContext('2d');
     if (analyticsChartInstance) analyticsChartInstance.destroy();
 
@@ -238,51 +239,7 @@ function updateCharts(classCounts) {
             maintainAspectRatio: false,
             plugins: { 
                 legend: { display: false },
-                datalabels: { display: false } // Bar chart တွင် datalabels ကို ခေတ္တပိတ်ထားမည်
-            },
-            scales: {
-                y: { 
-                    beginAtZero: true,
-                    ticks: { precision: 0, font: { family: 'Plus Jakarta Sans' } },
-                    grid: { color: '#f1f5f9' }
-                },
-                x: {
-                    ticks: { font: { family: 'Plus Jakarta Sans', weight: '600' } },
-                    grid: { display: false }
-                }
-            }
-        }
-    });
-}
-
-    // 2. Detailed Analytics Chart with Multi-colors
-    const ctx2 = document.getElementById('detailedAnalyticsChart').getContext('2d');
-    if (analyticsChartInstance) analyticsChartInstance.destroy();
-
-    analyticsChartInstance = new Chart(ctx2, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Class Count',
-                data: dataValues,
-                backgroundColor: backgroundColors,
-                borderColor: borderColors,
-                borderWidth: 2,
-                borderRadius: 12,
-                borderSkipped: false
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { 
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1e293b',
-                    padding: 12,
-                    cornerRadius: 8
-                }
+                datalabels: { display: false } // Bar Chart တွင် မလိုအပ်သောကြောင့် ပိတ်ထားသည်
             },
             scales: {
                 y: { 

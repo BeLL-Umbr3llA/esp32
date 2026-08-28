@@ -12,9 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="/css/style.css">
-    <!-- Chart.js DataLabels Plugin ( Percentage % ပြသရန် ) -->
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="bg-[#f4f6f9] text-slate-700 font-sans antialiased flex h-screen overflow-hidden">
 
@@ -31,7 +30,7 @@
                     </div>
                     <div>
                         <h1 class="text-base font-bold text-slate-800 tracking-tight">Tiny-ML System</h1>
-                        <p class="text-[11px] text-slate-400 font-medium">IoT Sever and Dashboard</p>
+                        <p class="text-[11px] text-slate-400 font-medium">IoT Visual Analytics</p>
                     </div>
                 </div>
                 <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-slate-600">
@@ -72,11 +71,11 @@
 
         <!-- System User Status -->
         <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs">
+            <div class="w-9 h-9 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs shrink-0">
                 EC
             </div>
             <div class="overflow-hidden">
-                <p class="text-xs font-bold text-slate-800 truncate">Electronic Engineering Department</p>
+                <p class="text-xs font-bold text-slate-800 truncate">Electronic Engineering</p>
                 <p class="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> System Active
                 </p>
@@ -93,10 +92,10 @@
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
                 
-                <h2 id="page-title" class="text-sm md:text-base font-bold text-slate-800">Object Classification and Sorting System with Robotics Arm Using Tiny Machine Learning <span class="text-xs font-normal text-slate-400"> Live</span></h2>
+                <h2 id="page-title" class="text-sm md:text-base font-bold text-slate-800">Object Classification & Sorting System with Robotic Arm Using Tiny-ML<span class="text-xs font-normal text-slate-400"> Live</span></h2>
             </div>
 
-            <!-- Top Header Right Actions -->
+            <!-- Top Header Right Actions (Thesis Project removed) -->
             <div class="flex items-center gap-3">
                 <div class="hidden sm:flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl text-xs text-slate-500">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -105,202 +104,245 @@
                 <button onclick="fetchDashboardData()" class="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition" title="Refresh Data">
                     <i class="fa-solid fa-arrows-rotate"></i>
                 </button>
-                <div class="h-4 w-px bg-slate-200"></div>
-                <span class="text-xs font-semibold text-slate-500">Thesis Project</span>
             </div>
         </header>
 
         <!-- Dynamic Main Content Window -->
-        <main class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 flex flex-col justify-between">
 
-            <!-- Filter Bar with Specific Date Picker Integration -->
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-sm gap-4">
-                <div class="text-xs font-bold text-slate-500 flex items-center gap-2 shrink-0">
-                    <i class="fa-solid fa-calendar-days text-indigo-600 text-sm"></i> TIMEFRAME FILTER:
-                </div>
-                
-                <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-                    <!-- Specific Date Input -->
-                    <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1 text-xs">
-                        <label for="specific-date" class="text-slate-500 font-semibold text-[11px] whitespace-nowrap">Select Date:</label>
-                        <input type="date" id="specific-date" onchange="onDateSearch()" class="bg-transparent border-none focus:outline-none text-xs font-bold text-slate-700 cursor-pointer">
+            <div class="space-y-6">
+                <!-- Filter Bar with Specific Date Picker Integration -->
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-sm gap-4">
+                    <div class="text-xs font-bold text-slate-500 flex items-center gap-2 shrink-0">
+                        <i class="fa-solid fa-calendar-days text-indigo-600 text-sm"></i> TIMEFRAME FILTER:
                     </div>
-
-                    <!-- Preset Buttons -->
-                    <div class="flex gap-1.5">
-                        <button onclick="setFilter('day')" id="btn-day" class="filter-btn active px-3.5 py-1.5 rounded-xl text-xs font-bold transition">Daily</button>
-                        <button onclick="setFilter('week')" id="btn-week" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition">Weekly</button>
-                        <button onclick="setFilter('month')" id="btn-month" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition">Monthly</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 1: OVERVIEW SCREEN -->
-            <section id="tab-overview" class="space-y-6">
-
-                <!-- 4 Top Stat Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Total Processed Card -->
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-medium text-slate-400">Total Classified</p>
-                            <h3 id="stat-total" class="text-2xl font-extrabold text-slate-800 mt-1">0</h3>
-                        </div>
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-box"></i>
-                        </div>
-                    </div>
-
-                    <!-- Avg Confidence Score Card -->
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-medium text-slate-400">Avg Confidence</p>
-                            <h3 id="stat-confidence" class="text-2xl font-extrabold text-emerald-600 mt-1">0%</h3>
-                        </div>
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-chart-line"></i>
-                        </div>
-                    </div>
-
-                    <!-- Misclassification Count Card -->
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-medium text-slate-400">Misclassifications</p>
-                            <h3 id="stat-misclass" class="text-2xl font-extrabold text-amber-600 mt-1">0</h3>
-                        </div>
-                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                        </div>
-                    </div>
-
-                    <!-- Categories Count Card -->
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-medium text-slate-400">Object Categories</p>
-                            <h3 id="stat-classes" class="text-2xl font-extrabold text-purple-600 mt-1">0</h3>
-                        </div>
-                        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Latest Frame Capture & Real-time Info Section -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     
-                    <!-- Real-Time Camera Feed Card -->
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                                    <i class="fa-solid fa-camera text-indigo-600 mr-2"></i> Realtime ESP32 Frame
-                                </h3>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">LIVE</span>
+                    <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                        <!-- Specific Date Input -->
+                        <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1 text-xs">
+                            <label for="specific-date" class="text-slate-500 font-semibold text-[11px] whitespace-nowrap">Select Date:</label>
+                            <input type="date" id="specific-date" onchange="onDateSearch()" class="bg-transparent border-none focus:outline-none text-xs font-bold text-slate-700 cursor-pointer">
+                        </div>
+
+                        <!-- Preset Buttons -->
+                        <div class="flex gap-1.5">
+                            <button onclick="setFilter('day')" id="btn-day" class="filter-btn active px-3.5 py-1.5 rounded-xl text-xs font-bold transition">Daily</button>
+                            <button onclick="setFilter('week')" id="btn-week" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition">Weekly</button>
+                            <button onclick="setFilter('month')" id="btn-month" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition">Monthly</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 1: OVERVIEW SCREEN -->
+                <section id="tab-overview" class="space-y-6">
+                    <!-- 4 Top Stat Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-medium text-slate-400">Total Classified</p>
+                                <h3 id="stat-total" class="text-2xl font-extrabold text-slate-800 mt-1">0</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-box"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-medium text-slate-400">Avg Confidence</p>
+                                <h3 id="stat-confidence" class="text-2xl font-extrabold text-emerald-600 mt-1">0%</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-medium text-slate-400">Misclassifications</p>
+                                <h3 id="stat-misclass" class="text-2xl font-extrabold text-amber-600 mt-1">0</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-medium text-slate-400">Object Categories</p>
+                                <h3 id="stat-classes" class="text-2xl font-extrabold text-purple-600 mt-1">0</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Latest Frame Capture & Real-time Info Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                        <i class="fa-solid fa-camera text-indigo-600 mr-2"></i> Realtime ESP32 Frame
+                                    </h3>
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">LIVE</span>
+                                </div>
+
+                                <div class="relative w-full h-56 bg-slate-100 rounded-xl overflow-hidden border border-slate-200 flex items-center justify-center">
+                                    <img id="latest-image" src="" alt="Capture" class="w-full h-full object-cover hidden">
+                                    <div id="image-placeholder" class="text-center text-slate-400">
+                                        <i class="fa-solid fa-image text-3xl mb-2"></i>
+                                        <p class="text-xs">Waiting for Camera Payload...</p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="relative w-full h-56 bg-slate-100 rounded-xl overflow-hidden border border-slate-200 flex items-center justify-center">
-                                <img id="latest-image" src="" alt="Capture" class="w-full h-full object-cover hidden">
-                                <div id="image-placeholder" class="text-center text-slate-400">
-                                    <i class="fa-solid fa-image text-3xl mb-2"></i>
-                                    <p class="text-xs">Waiting for Camera Payload...</p>
+                            <div class="mt-4 pt-4 border-t border-slate-100 space-y-2 text-xs">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Class Label:</span>
+                                    <span id="latest-class" class="font-bold text-indigo-600">N/A</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Confidence:</span>
+                                    <span id="latest-confidence" class="font-bold text-emerald-600">N/A</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Timestamp:</span>
+                                    <span id="latest-time" class="text-slate-600 font-medium">N/A</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mt-4 pt-4 border-t border-slate-100 space-y-2 text-xs">
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Class Label:</span>
-                                <span id="latest-class" class="font-bold text-indigo-600">N/A</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Confidence:</span>
-                                <span id="latest-confidence" class="font-bold text-emerald-600">N/A</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Timestamp:</span>
-                                <span id="latest-time" class="text-slate-600 font-medium">N/A</span>
+                        <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col">
+                            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-4">
+                                <i class="fa-solid fa-chart-column text-indigo-600 mr-2"></i> Classification Distribution
+                            </h3>
+                            <div class="flex-1 relative min-h-[220px]">
+                                <canvas id="overviewChart"></canvas>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                    <!-- Category Breakdown Chart Section -->
-                    <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col">
-                        <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-4">
-                            <i class="fa-solid fa-chart-column text-indigo-600 mr-2"></i> Classification Distribution
-                        </h3>
-                        <div class="flex-1 relative min-h-[220px]">
-                            <canvas id="overviewChart"></canvas>
+                <!-- TAB 2: ANALYTICS & DETAILED GRAPHS SCREEN -->
+                <section id="tab-analytics" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <h3 class="text-sm font-bold text-slate-800 mb-4">Class Distribution Breakdown</h3>
+                        <div class="h-80 relative">
+                            <canvas id="detailedAnalyticsChart"></canvas>
                         </div>
                     </div>
+                </section>
 
-                </div>
-
-            </section>
-
-            <!-- TAB 2: ANALYTICS & DETAILED GRAPHS SCREEN -->
-            <section id="tab-analytics" class="hidden space-y-6">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
-                    <h3 class="text-sm font-bold text-slate-800 mb-4">Class Distribution Breakdown</h3>
-                    <div class="h-80 relative">
-                        <canvas id="detailedAnalyticsChart"></canvas>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TAB 3: MISCLASSIFICATIONS SCREEN -->
-            <section id="tab-misclassification" class="hidden space-y-6">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <h3 class="text-sm font-bold text-slate-800">Misclassifications & Low Confidence Objects</h3>
-                            <p class="text-xs text-slate-400">Objects flagged with confidence &lt; 70% or labeled as 'unknown'</p>
+                <!-- TAB 3: MISCLASSIFICATIONS SCREEN -->
+                <section id="tab-misclassification" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800">Misclassifications & Low Confidence Objects</h3>
+                                <p class="text-xs text-slate-400">Objects flagged with confidence &lt; 70% or labeled as 'unknown'</p>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-600">
+                                <thead class="bg-slate-50 uppercase text-[10px] font-bold text-slate-400 border-b border-slate-100">
+                                    <tr>
+                                        <th class="p-3">Captured Frame</th>
+                                        <th class="p-3">Detected Label</th>
+                                        <th class="p-3">Confidence Score</th>
+                                        <th class="p-3">Date</th>
+                                        <th class="p-3">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="misclass-table-body" class="divide-y divide-slate-100">
+                                    <!-- Dynamic Misclassification Rows -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-slate-600">
-                            <thead class="bg-slate-50 uppercase text-[10px] font-bold text-slate-400 border-b border-slate-100">
-                                <tr>
-                                    <th class="p-3">Captured Frame</th>
-                                    <th class="p-3">Detected Label</th>
-                                    <th class="p-3">Confidence Score</th>
-                                    <th class="p-3">Date</th>
-                                    <th class="p-3">Time</th>
-                                </tr>
-                            </thead>
-                            <tbody id="misclass-table-body" class="divide-y divide-slate-100">
-                                <!-- Dynamic Misclassification Rows -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- TAB 4: COMPLETE LOGS SCREEN -->
-            <section id="tab-logs" class="hidden space-y-6">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
-                    <h3 class="text-sm font-bold text-slate-800 mb-4">Full Sorting Telemetry Logs</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-slate-600">
-                            <thead class="bg-slate-50 uppercase text-[10px] font-bold text-slate-400 border-b border-slate-100">
-                                <tr>
-                                    <th class="p-3">Frame</th>
-                                    <th class="p-3">Class Label</th>
-                                    <th class="p-3">Confidence</th>
-                                    <th class="p-3">Date</th>
-                                    <th class="p-3">Time</th>
-                                </tr>
-                            </thead>
-                            <tbody id="logs-table-body" class="divide-y divide-slate-100">
-                                <!-- Dynamic Rows -->
-                            </tbody>
-                        </table>
+                <!-- TAB 4: COMPLETE LOGS SCREEN -->
+                <section id="tab-logs" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <h3 class="text-sm font-bold text-slate-800 mb-4">Full Sorting Telemetry Logs</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-600">
+                                <thead class="bg-slate-50 uppercase text-[10px] font-bold text-slate-400 border-b border-slate-100">
+                                    <tr>
+                                        <th class="p-3">Frame</th>
+                                        <th class="p-3">Class Label</th>
+                                        <th class="p-3">Confidence</th>
+                                        <th class="p-3">Date</th>
+                                        <th class="p-3">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logs-table-body" class="divide-y divide-slate-100">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
 
+<footer class="mt-8 pt-5 pb-5 border-t border-slate-200/80 bg-white/80 -mx-4 md:-mx-6 -mb-4 md:-mb-6 px-6 rounded-b-2xl shadow-sm">
+    <div class="flex flex-col xl:flex-row items-center justify-between gap-4">
+        
+        <div class="flex items-center shrink-0">
+            <div class="flex flex-col gap-1.5 bg-slate-100/90 border border-slate-200/80 px-3.5 py-2 rounded-xl shadow-2xs">
+                <div class="flex items-center gap-2 text-slate-800 font-bold text-xs">
+                    <i class="fa-solid fa-user-gear text-indigo-600"></i>
+                    <span>Mg Aung Ko Phyoe</span>
+                    <span class="text-[11px] text-indigo-700 bg-indigo-50 font-bold px-2 py-0.5 rounded-lg border border-indigo-100">
+                        BEEC VI-1
+                    </span>
+                </div>
+                <div class="text-[11px] font-semibold text-slate-600 flex items-center gap-1.5">
+                    <i class="fa-solid fa-graduation-cap text-xs text-indigo-600"></i>
+                    <span>Department of Electronic Engineering</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-center shrink-0">
+            <div class="flex flex-wrap items-center justify-center gap-2 bg-slate-100/60 border border-slate-200/60 p-1.5 rounded-xl">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
+                    <i class="fa-solid fa-brain text-indigo-600 text-xs"></i> TinyML
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
+                    <i class="fa-solid fa-microchip text-indigo-600 text-xs"></i> ESP32
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
+                    <i class="fa-solid fa-camera text-indigo-600 text-xs"></i> ESP32-CAM
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
+                    <i class="fa-solid fa-robot text-indigo-600 text-xs"></i> Servo Arm
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
+                    <i class="fa-brands fa-node-js text-indigo-600 text-xs"></i> Node.js
+                </span>
+            </div>
+        </div>
+
+        <div class="flex items-center shrink-0">
+            <div class="flex flex-col gap-0.5 bg-slate-100/90 border border-slate-200/80 px-3.5 py-2 rounded-xl shadow-2xs text-center xl:text-right">
+                <h4 class="text-xs font-bold text-slate-800 flex items-center justify-center xl:justify-end gap-1.5 tracking-tight">
+                    <i class="fa-solid fa-building-columns text-indigo-600"></i>
+                    Technological University (Monywa)
+                </h4>
+                <p class="text-[11px] font-medium text-slate-500">
+                    &copy; 2026 All Rights Reserved.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</footer>
         </main>
     </div>
 
-    <script src="/js/dashboard.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>

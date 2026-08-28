@@ -67,7 +67,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } });
 const cpUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'json_data', maxCount: 1 }]);
 
-// ESP32 Upload Endpoint (မြန်မာစံတော်ချိန်ဖြင့် သိမ်းဆည်းရန် ပြင်ဆင်ထားပါသည်)
+// ESP32 Upload Endpoint (မြန်မာစံတော်ချိန်ဖြင့် သိမ်းဆည်းရန်)
 app.post('/upload', (req, res) => {
     cpUpload(req, res, async (err) => {
         if (err) return res.status(400).json({ status: 'error', message: err.message });
@@ -122,7 +122,7 @@ app.post('/upload', (req, res) => {
                 },
                 timestamp: { 
                     iso_time: now,       // Database Filter များအတွက် UTC အတိုင်းထားမည်
-                    date: formattedDate, // မြန်မာစံတော်ချိန် ရက်စွဲ
+                    date: formattedDate, // မြန်မာစံတော်ချိန် ရက်စွဲ (YYYY-MM-DD)
                     time: formattedTime  // မြန်မာစံတော်ချိန် အချိန်
                 }
             });
@@ -135,31 +135,42 @@ app.post('/upload', (req, res) => {
     });
 });
 
-// Full Dashboard Analytics API (မြန်မာစံတော်ချိန်အတိုင်း Filter စစ်ပေးမည်)
+// Full Dashboard Analytics API (Specific Date Search + Presets)
 app.get('/api/dashboard/summary', async (req, res) => {
     try {
-        const { range } = req.query; // 'day', 'week', 'month'
+        const { range, date } = req.query; // 'day', 'week', 'month', 'custom' & specific date string
         
+        let queryCondition = {};
         const now = new Date();
-        const mmNow = new Date(now.getTime() + (6.5 * 60 * 60 * 1000));
-        let startDate;
 
-        if (range === 'week') {
-            startDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
-        } else if (range === 'month') {
-            startDate = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
-        } else {
-            // Day Filter: မြန်မာစံတော်ချိန် ယနေ့ 00:00:00 မှ စတင်တွက်ချက်ခြင်း
-            const mmTodayStart = new Date(Date.UTC(
-                mmNow.getUTCFullYear(),
-                mmNow.getUTCMonth(),
-                mmNow.getUTCDate(),
-                0, 0, 0
-            ));
-            startDate = new Date(mmTodayStart.getTime() - (6.5 * 60 * 60 * 1000));
+        // 1. Specific Date Picker ဖြင့် ရှာဖွေမှု (Custom Date)
+        if (date) {
+            queryCondition = { "timestamp.date": date };
+        } 
+        // 2. Preset Range Filter များ (Daily, Weekly, Monthly)
+        else {
+            let startDate;
+            const mmNow = new Date(now.getTime() + (6.5 * 60 * 60 * 1000));
+
+            if (range === 'week') {
+                startDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
+            } else if (range === 'month') {
+                startDate = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+            } else {
+                // Day Filter: မြန်မာစံတော်ချိန် ယနေ့ 00:00:00 မှ စတင်တွက်ချက်ခြင်း
+                const mmTodayStart = new Date(Date.UTC(
+                    mmNow.getUTCFullYear(),
+                    mmNow.getUTCMonth(),
+                    mmNow.getUTCDate(),
+                    0, 0, 0
+                ));
+                startDate = new Date(mmTodayStart.getTime() - (6.5 * 60 * 60 * 1000));
+            }
+
+            queryCondition = { "timestamp.iso_time": { $gte: startDate } };
         }
 
-        const records = await ESP32GroupData.find({ "timestamp.iso_time": { $gte: startDate } }).sort({ "timestamp.iso_time": -1 });
+        const records = await ESP32GroupData.find(queryCondition).sort({ "timestamp.iso_time": -1 });
         const latestRecord = await ESP32GroupData.findOne().sort({ "timestamp.iso_time": -1 });
 
         const classCounts = {};
@@ -173,7 +184,7 @@ app.get('/api/dashboard/summary', async (req, res) => {
             classCounts[cName] = (classCounts[cName] || 0) + 1;
             totalConfidence += conf;
 
-            // Misclassification Threshold: Confidence < 70% or class 'unknown'
+            // Misclassification Threshold: Confidence < 70% သို့မဟုတ် class 'unknown'
             if (conf < 70 || cName.toLowerCase() === 'unknown') {
                 misclassifications.push(r);
             }

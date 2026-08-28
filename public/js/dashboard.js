@@ -141,20 +141,90 @@ function updateCharts(classCounts) {
     const labels = Object.keys(classCounts);
     const dataValues = Object.values(classCounts);
 
-    // Dynamic Multi-color setup per Item
+    // Total Count တွက်ချက်ခြင်း (%) ရာခိုင်နှုန်းတွက်ရန်
+    const totalCount = dataValues.reduce((a, b) => a + b, 0);
+
+    // Color Palette matching the layout theme
     const backgroundColors = labels.map((_, index) => colorPalette[index % colorPalette.length].bg);
     const borderColors = labels.map((_, index) => colorPalette[index % colorPalette.length].border);
 
-    // 1. Overview Bar Chart with Multi-colors
+    // DataLabels Plugin Registrations
+    if (typeof ChartDataLabels !== 'undefined') {
+        Chart.register(ChartDataLabels);
+    }
+
+    // 1. Overview Pie/Doughnut Chart with Percentage (%)
     const ctx1 = document.getElementById('overviewChart').getContext('2d');
     if (overviewChartInstance) overviewChartInstance.destroy();
 
     overviewChartInstance = new Chart(ctx1, {
+        type: 'doughnut', // Pie လိုချင်ပါက 'pie' ဟု ပြောင်းနိုင်ပါသည်
+        data: {
+            labels: labels,
+            datasets: [{
+                data: dataValues,
+                backgroundColor: backgroundColors,
+                borderColor: '#ffffff',
+                borderWidth: 3,
+                hoverOffset: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%', // Doughnut အလယ်အပေါက်အရွယ်အစား (Pie သုံးပါက မလိုပါ)
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        padding: 15,
+                        font: { family: 'Plus Jakarta Sans', size: 12, weight: '600' },
+                        color: '#475569'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(context) {
+                            const val = context.raw || 0;
+                            const pct = totalCount > 0 ? ((val / totalCount) * 100).toFixed(1) : 0;
+                            return ` ${context.label}: ${val} (${pct}%)`;
+                        }
+                    }
+                },
+                // Slice ပေါ်တွင် % ပေါ်စေသည့် Plugin Config
+                datalabels: {
+                    color: '#ffffff',
+                    font: {
+                        family: 'Plus Jakarta Sans',
+                        weight: 'bold',
+                        size: 12
+                    },
+                    formatter: (value) => {
+                        if (totalCount === 0) return '0%';
+                        const percentage = ((value / totalCount) * 100).toFixed(1);
+                        return percentage > 4 ? `${percentage}%` : ''; // Space နည်းပါက မပြဘဲ ထားမည်
+                    }
+                }
+            }
+        }
+    });
+
+    // 2. Detailed Analytics Chart (Bar Chart အတိုင်းထားရှိခြင်း)
+    const ctx2 = document.getElementById('detailedAnalyticsChart').getContext('2d');
+    if (analyticsChartInstance) analyticsChartInstance.destroy();
+
+    analyticsChartInstance = new Chart(ctx2, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Item Count',
+                label: 'Class Count',
                 data: dataValues,
                 backgroundColor: backgroundColors,
                 borderColor: borderColors,
@@ -168,13 +238,7 @@ function updateCharts(classCounts) {
             maintainAspectRatio: false,
             plugins: { 
                 legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1e293b',
-                    padding: 10,
-                    cornerRadius: 8,
-                    titleFont: { family: 'Plus Jakarta Sans', size: 12, weight: 'bold' },
-                    bodyFont: { family: 'Plus Jakarta Sans', size: 12 }
-                }
+                datalabels: { display: false } // Bar chart တွင် datalabels ကို ခေတ္တပိတ်ထားမည်
             },
             scales: {
                 y: { 
@@ -189,6 +253,7 @@ function updateCharts(classCounts) {
             }
         }
     });
+}
 
     // 2. Detailed Analytics Chart with Multi-colors
     const ctx2 = document.getElementById('detailedAnalyticsChart').getContext('2d');

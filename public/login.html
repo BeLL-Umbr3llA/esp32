@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Login & Thesis Documentation - TinyML Robotic Sorting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Sign-In SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f4f6f9] text-slate-700 antialiased min-h-screen flex flex-col justify-between selection:bg-indigo-600 selection:text-white overflow-x-hidden">
+
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-indigo-100/60 blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-blue-100/60 blur-3xl"></div>
+    </div>
+
+    <!-- Mobile-Optimized Header -->
+    <header class="relative z-10 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-3 sm:px-8 py-3 flex flex-row items-center justify-between gap-2 shadow-xs">
+        <div class="flex items-center gap-2 min-w-0">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-200 shrink-0">
+                <i class="fa-solid fa-microchip text-xs sm:text-sm"></i>
+            </div>
+            <div class="min-w-0">
+                <h1 class="text-[11px] sm:text-xs font-extrabold text-slate-900 tracking-tight truncate">TinyML Robotic Sorting</h1>
+                <p class="text-[8px] sm:text-[9px] text-slate-400 font-medium truncate">Electronic Engineering Dept</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-2xl shrink-0">
+            <button onclick="switchView('preview')" id="nav-preview" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-[10px] sm:text-[11px] font-bold bg-white text-indigo-600 shadow-sm transition flex items-center justify-center gap-1">
+                <i class="fa-solid fa-book-open text-[9px] sm:text-[10px]"></i>
+                <span class="hidden xs:inline">Documentation</span>
+            </button>
+            <button onclick="switchView('login')" id="nav-login" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-[10px] sm:text-[11px] font-bold text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1">
+                <i class="fa-solid fa-lock text-[9px] sm:text-[10px]"></i>
+                <span>Login</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-10 flex items-center justify-center">
+
+        <div id="view-preview" class="w-full space-y-4 sm:space-y-10">
+            
+            <!-- Hero Title Section with Proper Spacing -->
+            <div class="text-center max-w-3xl mx-auto space-y-3 px-1">
+                <span class="inline-block px-3 py-1 bg-indigo-50 border border-indigo-200/80 text-indigo-600 rounded-full text-[10px] sm:text-[11px] font-extrabold tracking-wide uppercase shadow-2xs">2025-2026 Academic Year</span>
+                <h2 class="text-lg sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-snug">
+                    Object Classification and Robotic Sorting System using Tiny-Machine Learning
+                </h2>
+                <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed text-justify sm:text-center px-1">
+                    A comprehensive edge-AI solution integrating ESP32-CAM vision modules, MobileNetV2 transfer learning via Edge Impulse, and automated robotic sorting.
+                </p>
+
+                <div class="pt-1 flex flex-col sm:flex-row items-center justify-center gap-2.5 text-[11px] sm:text-xs font-semibold text-slate-700">
+                    <div class="px-3.5 py-2.5 bg-white border border-slate-200/90 rounded-2xl shadow-2xs flex items-center gap-2 w-full sm:w-auto justify-center">
+                        <i class="fa-solid fa-user-graduate text-indigo-600 text-xs sm:text-sm"></i>
+                        <span>Researched by: <strong class="text-slate-900">Mg Aung Ko Phyoe</strong></span>
+                    </div>
+                    <div class="px-3.5 py-2.5 bg-white border border-slate-200/90 rounded-2xl shadow-2xs flex items-center gap-2 w-full sm:w-auto justify-center">
+                        <i class="fa-solid fa-chalkboard-user text-indigo-600 text-xs sm:text-sm"></i>
+                        <span>Supervised by: <strong class="text-slate-900">Daw Tin Nyo Maw</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Abstract Section -->
+            <div class="bg-white border border-slate-200/85 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 shadow-xs space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 cursor-pointer select-none" onclick="toggleSection('abstract-content', 'abstract-arrow')">
+                    <h3 class="text-xs sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                        <i class="fa-solid fa-file-lines text-indigo-600"></i>Abstract
+                    </h3>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100/60 hidden sm:inline-block">Project Summary</span>
+                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 transition-transform duration-300 rotate-180 shrink-0" id="abstract-arrow">
+                            <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 gap-2.5 sm:gap-4 transition-all duration-300" id="abstract-content" style="display: none;">
+                    
+                    <div class="group relative flex items-start gap-3 p-3.5 sm:p-5 bg-gradient-to-r from-slate-50/70 via-slate-50/30 to-transparent rounded-xl sm:rounded-2xl border border-slate-200/60">
+                        <span class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center justify-center text-indigo-600 font-bold text-[10px] sm:text-xs">01</span>
+                        <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                            This thesis presents an object classification and robotic sorting system that utilizes <strong class="text-slate-900 font-semibold">Tiny-Machine Learning</strong> with an <strong class="text-slate-900 font-semibold">ESP32-CAM</strong> and a central <strong class="text-slate-900 font-semibold">ESP32</strong> connected via a serial <strong class="text-slate-900 font-semibold">UART</strong> interface.
+                        </p>
+                    </div>
+
+                    <div class="group relative flex items-start gap-3 p-3.5 sm:p-5 bg-gradient-to-r from-slate-50/70 via-slate-50/30 to-transparent rounded-xl sm:rounded-2xl border border-slate-200/60">
+                        <span class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center justify-center text-indigo-600 font-bold text-[10px] sm:text-xs">02</span>
+                        <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                            A custom <strong class="text-slate-900 font-semibold">MobileNetV2</strong> model was trained in Edge Impulse Studio using a <strong class="text-slate-900 font-semibold">96x96 pixel resolution</strong>, grayscale input channels, and a <strong class="text-slate-900 font-semibold">16-neuron dense layer</strong>, achieving <strong class="text-slate-900 font-semibold">97.6% accuracy</strong>.
+                        </p>
+                    </div>
+
+                    <div class="group relative flex items-start gap-3 p-3.5 sm:p-5 bg-gradient-to-r from-slate-50/70 via-slate-50/30 to-transparent rounded-xl sm:rounded-2xl border border-slate-200/60">
+                        <span class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center justify-center text-indigo-600 font-bold text-[10px] sm:text-xs">03</span>
+                        <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                            Classification classes, confidence scores, and captured images are packaged into <strong class="text-slate-900 font-semibold">JSON payloads</strong> and transmitted via <strong class="text-slate-900 font-semibold">HTTP POST</strong> requests to a <strong class="text-slate-900 font-semibold">Node.js and Express.js</strong> backend hosted on <strong class="text-slate-900 font-semibold">Vercel</strong>.
+                        </p>
+                    </div>
+
+                    <div class="group relative flex items-start gap-3 p-3.5 sm:p-5 bg-gradient-to-r from-slate-50/70 via-slate-50/30 to-transparent rounded-xl sm:rounded-2xl border border-slate-200/60">
+                        <span class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center justify-center text-indigo-600 font-bold text-[10px] sm:text-xs">04</span>
+                        <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                            The backend securely manages data storage by uploading image files to <strong class="text-slate-900 font-semibold">Cloudinary</strong> and recording operational data within a <strong class="text-slate-900 font-semibold">MongoDB</strong> database.
+                        </p>
+                    </div>
+
+                    <div class="group relative flex items-start gap-3 p-3.5 sm:p-5 bg-gradient-to-r from-slate-50/70 via-slate-50/30 to-transparent rounded-xl sm:rounded-2xl border border-slate-200/60">
+                        <span class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center justify-center text-indigo-600 font-bold text-[10px] sm:text-xs">05</span>
+                        <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                            A web dashboard built with <strong class="text-slate-900 font-semibold">HTML and Tailwind CSS</strong> is powered by the system to facilitate comprehensive <strong class="text-slate-900 font-semibold">real-time monitoring</strong> and historical analytics.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- System Technology Architecture Section -->
+            <div class="bg-white border border-slate-200/85 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 shadow-xs space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 cursor-pointer select-none" onclick="toggleSection('tech-content', 'tech-arrow')">
+                    <h3 class="text-xs sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                        <i class="fa-solid fa-microchip text-indigo-600"></i>System Technology Architecture
+                    </h3>
+                    <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 transition-transform duration-300 rotate-180 shrink-0" id="tech-arrow">
+                        <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
+                    </span>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 transition-all duration-300" id="tech-content" style="display: none;">
+                    
+                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
+                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-brain text-indigo-600"></i> Edge Impulse & MobileNetV2
+                        </h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                            Transfer learning using pre-trained <strong>MobileNetV2</strong> optimized on <strong>Edge Impulse</strong> for efficient micro-controller image inference.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
+                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-camera text-indigo-600"></i> ESP32-CAM & ESP32
+                        </h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                            <strong>ESP32-CAM</strong> acts as the vision capture node (OV2640 sensor), communicating with the main <strong>ESP32</strong> controller managing real-time tasks.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
+                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-gears text-indigo-600"></i> Conveyor & Servo Arms
+                        </h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                            A <strong>DC motor</strong> drives the conveyor belt through motor drivers, while precise <strong>servo motors</strong> control the robotic sorting gates.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
+                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-server text-indigo-600"></i> Node.js & Express Backend
+                        </h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                            RESTful API server built using <strong>Node.js and Express</strong> to receive classification events from the hardware edge node.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
+                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-database text-indigo-600"></i> MongoDB Cloud Database
+                        </h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                            Secure cloud storage utilizing <strong>MongoDB</strong> to retain history logs, confidence metrics, and misclassification records.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
+                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-cloud text-indigo-600"></i> Vercel Cloud Hosting
+                        </h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                            The admin dashboard and cloud backend are hosted on <strong>Vercel</strong> for fast, global availability and live data streaming.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- System Workflow Section -->
+           <div class="bg-white border border-slate-200/85 p-4 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl shadow-xs space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 cursor-pointer select-none" onclick="toggleSection('workflow-content', 'workflow-arrow')">
+                    <h3 class="text-xs sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                        <i class="fa-solid fa-diagram-project text-indigo-600"></i>System Workflow
+                    </h3>
+                    <div class="flex items-center gap-2">
+                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 transition-transform duration-300 rotate-180 shrink-0" id="workflow-arrow">
+                            <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 transition-all duration-300" id="workflow-content" style="display: none;">
+                    
+                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[9px] sm:text-[10px] font-black tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase">Step 01</span>
+                            <i class="fa-solid fa-conveyor-belt text-slate-400 text-xs"></i>
+                        </div>
+                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800">Conveyor Feed</h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">DC motor precisely moves the product under the ESP32-CAM active optical field.</p>
+                    </div>
+
+                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[9px] sm:text-[10px] font-black tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase">Step 02</span>
+                            <i class="fa-solid fa-microchip text-slate-400 text-xs"></i>
+                        </div>
+                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800">TinyML Inference</h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">Optimized MobileNetV2 model classifies the item locally at the edge.</p>
+                    </div>
+
+                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[9px] sm:text-[10px] font-black tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase">Step 03</span>
+                            <i class="fa-solid fa-robot text-slate-400 text-xs"></i>
+                        </div>
+                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800">Robotic Sorting</h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">High-torque servo arm dynamically directs the item into its designated bin.</p>
+                    </div>
+
+                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[9px] sm:text-[10px] font-black tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase">Step 04</span>
+                            <i class="fa-solid fa-cloud-arrow-up text-slate-400 text-xs"></i>
+                        </div>
+                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800">Cloud Logging</h4>
+                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">MongoDB seamlessly stores real-time telemetry via Node.js API hosted on Vercel.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Test and Results Section -->
+            <div class="bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 shadow-xs space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 cursor-pointer select-none" onclick="toggleSection('test-content', 'test-arrow')">
+                    <div>
+                        <h3 class="text-xs sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-indigo-600"></i> Test and Results
+                        </h3>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 mt-0.5">Evaluation metrics of classification accuracy and hardware performance.</p>
+                    </div>
+                    <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 transition-transform duration-300 shrink-0" id="test-arrow">
+                        <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 transition-all duration-300" id="test-content">
+                    <div class="bg-slate-50/80 border border-slate-200/80 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 space-y-2.5">
+                        <div class="flex items-center justify-between text-[11px] sm:text-xs font-bold text-slate-800">
+                            <span><i class="fa-solid fa-camera text-indigo-600 mr-1"></i> Hardware Prototype Setup</span>
+                        </div>
+                        <div class="w-full h-36 sm:h-44 bg-slate-200/75 rounded-xl flex flex-col items-center justify-center text-slate-400 text-[11px] sm:text-xs border border-dashed border-slate-300 p-3 text-center">
+                            <i class="fa-solid fa-image text-xl sm:text-2xl mb-1 text-slate-400"></i>
+                            <span>[ Insert Hardware Prototype Test Photo Here ]</span>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-slate-500 text-justify">
+                            Shows physical assembly of ESP32-CAM mounted above the conveyor belt and servo sorting arms.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50/80 border border-slate-200/80 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 space-y-2.5">
+                        <div class="flex items-center justify-between text-[11px] sm:text-xs font-bold text-slate-800">
+                            <span><i class="fa-solid fa-chart-pie text-indigo-600 mr-1"></i> Edge Impulse Results</span>
+                        </div>
+                        <div class="w-full h-36 sm:h-44 bg-slate-200/75 rounded-xl flex flex-col items-center justify-center text-slate-400 text-[11px] sm:text-xs border border-dashed border-slate-300 p-3 text-center">
+                            <i class="fa-solid fa-chart-bar text-xl sm:text-2xl mb-1 text-slate-400"></i>
+                            <span>[ Insert Edge Impulse Model Graph Here ]</span>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-slate-500 text-justify">
+                            MobileNetV2 transfer learning validation graph showing high confidence distribution across object categories.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acknowledgement Section -->
+            <div class="bg-indigo-50/60 border border-indigo-100 rounded-2xl sm:rounded-3xl p-4 sm:p-8 text-center space-y-2">
+                <h3 class="text-[11px] sm:text-sm font-extrabold text-indigo-900 uppercase tracking-wider">Acknowledgement & Gratitude (ကျေးဇူးတင်လွှာ)</h3>
+                <p class="text-[11px] sm:text-sm text-indigo-700/90 max-w-2xl mx-auto leading-relaxed text-justify sm:text-center px-1">
+                    ဤနောက်ဆုံးနှစ် စီမံကိန်း (Final Year Thesis Project) အောင်မြင်စွာ ပြီးမြောက်နိုင်ရန်အတွက် အကြံဉာဏ်များ ပေး၍ လမ်းညွှန်ပြသပေးကြပါသော Technological University (Monywa) မှ ဆရာ/ဆရာမများ အားလုံးကို လှိုက်လှဲစွာ ကျေးဇူးတင်ရှိကြောင်း ဖော်ပြအပ်ပါသည်။
+                </p>
+            </div>
+
+            <div class="text-center pt-1">
+                <button onclick="switchView('login')" class="w-full sm:w-auto px-6 sm:px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl sm:rounded-2xl text-[11px] sm:text-xs font-bold shadow-lg shadow-indigo-200 transition inline-flex items-center justify-center gap-2">
+                    <span>Proceed to System Login & Live Dashboard</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- System Login View -->
+        <div id="view-login" class="hidden w-full max-w-md bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col mx-auto">
+            
+            <div class="px-5 sm:px-8 pt-6 sm:pt-8 pb-5 text-center border-b border-slate-100 bg-slate-50/50">
+                <div class="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-indigo-600 text-white text-xl sm:text-2xl font-bold shadow-lg shadow-indigo-200 mb-2.5">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h2 class="text-sm sm:text-lg font-extrabold text-slate-800 tracking-tight">System Administrator Login</h2>
+                <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5 font-medium">Sign in with authorized Admin Account or Google</p>
+            </div>
+
+            <div class="p-5 sm:p-8 space-y-4">
+                
+                <div id="error-alert" class="hidden items-center gap-2 bg-rose-50 border border-rose-200 text-rose-700 px-3.5 py-2.5 rounded-xl text-[11px] sm:text-xs font-semibold">
+                    <i class="fa-solid fa-circle-exclamation text-xs shrink-0"></i>
+                    <span id="error-message">Access Denied: Username သို့မဟုတ် Password မှားယွင်းနေပါသည်။</span>
+                </div>
+
+                <div id="credentials-login-form" class="space-y-3.5 pt-1">
+                    <div class="space-y-1 text-left">
+                        <label class="text-[10px] sm:text-[11px] font-bold text-slate-700 uppercase tracking-wide">Username / Email</label>
+                        <input type="text" id="login-username" placeholder="Enter username or email" class="w-full px-3.5 py-2.5 sm:py-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] sm:text-xs text-slate-800 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
+                    </div>
+
+                    <div class="space-y-1 text-left">
+                        <label class="text-[10px] sm:text-[11px] font-bold text-slate-700 uppercase tracking-wide">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter secure password" class="w-full px-3.5 py-2.5 sm:py-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] sm:text-xs text-slate-800 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
+                    </div>
+
+                    <button type="button" onclick="handleCredentialLogin()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-[11px] sm:text-xs font-bold shadow-md shadow-indigo-200 transition flex items-center justify-center gap-2">
+                        <span>Login with Username & Password</span>
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                    </button>
+                </div>
+
+                <div class="relative flex py-1 items-center">
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="flex-shrink mx-3 text-slate-400 text-[10px] uppercase font-bold">Or continue with</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                </div>
+
+                <div class="flex flex-col items-center justify-center space-y-3">
+                    <div id="g_id_onload"
+                         data-client_id="78856196784-un9i6t4sm72c1urb13hur991d1pd40j0.apps.googleusercontent.com"
+                         data-callback="handleGoogleLogin"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="pill"
+                         data-theme="outline"
+                         data-text="sign_in_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50/70 border border-indigo-100 p-3 rounded-xl text-[10px] sm:text-[11px] text-indigo-800 text-center">
+                    <span class="font-bold">Security Note:</span> Validated against MongoDB database records and whitelist parameters.
+                </div>
+
+                <div class="text-center pt-1">
+                    <button type="button" onclick="switchView('preview')" class="text-[11px] sm:text-xs text-indigo-600 font-semibold hover:underline">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Back to Thesis Documentation Preview
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="relative z-10 w-full bg-white/80 border-t border-slate-200/80 py-3 px-3 text-center">
+        <p class="text-[10px] sm:text-[11px] font-semibold text-slate-500 flex flex-wrap items-center justify-center gap-1.5">
+            <i class="fa-solid fa-building-columns text-indigo-600"></i>
+            Technological University (Monywa) — Department of Electronic Engineering
+        </p>
+    </footer>
+
+    <script src="js/login.js"></script>
+</body>
+</html>

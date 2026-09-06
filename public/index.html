@@ -4,23 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robotic Sorting Admin Dashboard</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link rel="stylesheet" href="./css/style.css">
+    <script>
+        // Login ဝင်ထားခြင်း ရှိမရှိ စစ်ဆေးခြင်း
+        if (localStorage.getItem('tinyml_auth') !== 'true') {
+            // Login မဝင်ရသေးလျှင် login.html သို့ အတင်းပြန်ပို့မည်
+            window.location.href = 'login.html';
+        }
+    </script>
 </head>
 <body class="bg-[#f4f6f9] text-slate-700 font-sans antialiased flex h-screen overflow-hidden">
 
-    <!-- Overlay for mobile sidebar -->
     <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-30 hidden md:hidden"></div>
 
-    <!-- Left Navigation Sidebar -->
     <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 fixed md:relative inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out">
         <div>
             <div class="h-16 px-6 border-b border-slate-100 flex items-center justify-between">
@@ -38,7 +39,6 @@
                 </button>
             </div>
 
-            <!-- Navigation Links -->
             <div class="p-4 space-y-1">
                 <p class="px-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Navigation</p>
                 
@@ -61,6 +61,14 @@
                     <span id="badge-misclass" class="px-2 py-0.5 rounded-full text-[10px] bg-amber-100 text-amber-700 font-bold">0</span>
                 </button>
 
+                <!-- Correct Data Tab Button -->
+                <button onclick="switchTab('correct')" id="nav-correct" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-50 transition">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check w-4 text-emerald-500"></i> Correct Classifications
+                    </div>
+                    <span id="badge-correct" class="px-2 py-0.5 rounded-full text-[10px] bg-emerald-100 text-emerald-700 font-bold">0</span>
+                </button>
+
                 <button onclick="switchTab('logs')" id="nav-logs" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-50 transition">
                     <div class="flex items-center gap-3">
                         <i class="fa-solid fa-table-list w-4"></i> Data Table Logs
@@ -69,21 +77,31 @@
             </div>
         </div>
 
-        <!-- System User Status -->
-        <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs shrink-0">
-                EC
+        <div class="relative p-4 border-t border-slate-100 bg-slate-50/50">
+            <div id="user-dropdown" class="hidden absolute bottom-full left-4 right-4 mb-2 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden z-50">
+                <button onclick="openChangePasswordModal()" class="w-full px-4 py-3 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5 border-b border-slate-100 transition">
+                    <i class="fa-solid fa-key text-indigo-600"></i> Change Password
+                </button>
+                <button onclick="handleLogout()" class="w-full px-4 py-3 text-left text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2.5 transition">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
             </div>
-            <div class="overflow-hidden">
-                <p class="text-xs font-bold text-slate-800 truncate">Electronic Engineering</p>
-                <p class="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> System Active
-                </p>
+
+            <div onclick="toggleUserDropdown()" class="flex items-center justify-between cursor-pointer p-1.5 rounded-xl hover:bg-slate-200/60 transition select-none">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <div id="user-avatar-initial" class="w-9 h-9 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs shrink-0">
+                        EC
+                    </div>
+                    <div class="overflow-hidden">
+                        <p id="display-username" class="text-xs font-bold text-slate-800 truncate">Electronic Engineering</p>
+                        <p id="display-role" class="text-[11px] text-indigo-600 font-semibold truncate">Dept Account</p>
+                    </div>
+                </div>
+                <i id="dropdown-arrow" class="fa-solid fa-chevron-up text-slate-400 text-xs transition-transform"></i>
             </div>
         </div>
     </aside>
 
-    <!-- Main Wrapper -->
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
@@ -91,11 +109,9 @@
                 <button onclick="toggleSidebar()" class="md:hidden text-slate-600 p-2 rounded-lg hover:bg-slate-100">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
-                
                 <h2 id="page-title" class="text-sm md:text-base font-bold text-slate-800">TinyML-Powered Robotic Sorting System Dashboard<span class="text-xs font-normal text-slate-400"> Live</span></h2>
             </div>
 
-            <!-- Top Header Right Actions (Thesis Project removed) -->
             <div class="flex items-center gap-3">
                 <div class="hidden sm:flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl text-xs text-slate-500">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -107,24 +123,20 @@
             </div>
         </header>
 
-        <!-- Dynamic Main Content Window -->
         <main class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 flex flex-col justify-between">
 
             <div class="space-y-6">
-                <!-- Filter Bar with Specific Date Picker Integration -->
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-sm gap-4">
                     <div class="text-xs font-bold text-slate-500 flex items-center gap-2 shrink-0">
                         <i class="fa-solid fa-calendar-days text-indigo-600 text-sm"></i> TIMEFRAME FILTER:
                     </div>
                     
                     <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-                        <!-- Specific Date Input -->
                         <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1 text-xs">
                             <label for="specific-date" class="text-slate-500 font-semibold text-[11px] whitespace-nowrap">Select Date:</label>
                             <input type="date" id="specific-date" onchange="onDateSearch()" class="bg-transparent border-none focus:outline-none text-xs font-bold text-slate-700 cursor-pointer">
                         </div>
 
-                        <!-- Preset Buttons -->
                         <div class="flex gap-1.5">
                             <button onclick="setFilter('day')" id="btn-day" class="filter-btn active px-3.5 py-1.5 rounded-xl text-xs font-bold transition">Daily</button>
                             <button onclick="setFilter('week')" id="btn-week" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition">Weekly</button>
@@ -133,9 +145,8 @@
                     </div>
                 </div>
 
-                <!-- TAB 1: OVERVIEW SCREEN -->
+                <!-- Overview Tab -->
                 <section id="tab-overview" class="space-y-6">
-                    <!-- 4 Top Stat Cards -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
                             <div>
@@ -178,7 +189,6 @@
                         </div>
                     </div>
 
-                    <!-- Latest Frame Capture & Real-time Info Section -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
                             <div>
@@ -225,8 +235,24 @@
                     </div>
                 </section>
 
-                <!-- TAB 2: ANALYTICS & DETAILED GRAPHS SCREEN -->
+                <!-- Analytics Tab -->
                 <section id="tab-analytics" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm mb-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-base">Model Accuracy Performance</h3>
+                                <p class="text-xs text-slate-400">Confidence trend over time across object classes</p>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs text-slate-500 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span>Live Time Series</span>
+                            </div>
+                        </div>
+                        <div class="relative h-72 w-full">
+                            <canvas id="accuracyTrendChart"></canvas>
+                        </div>
+                    </div>
+
                     <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
                         <h3 class="text-sm font-bold text-slate-800 mb-4">Class Distribution Breakdown</h3>
                         <div class="h-80 relative">
@@ -235,15 +261,29 @@
                     </div>
                 </section>
 
-                <!-- TAB 3: MISCLASSIFICATIONS SCREEN -->
+                <!-- Misclassifications Tab -->
                 <section id="tab-misclassification" class="hidden space-y-6">
                     <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
-                        <div class="flex items-center justify-between mb-4">
+                        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4">
                             <div>
                                 <h3 class="text-sm font-bold text-slate-800">Misclassifications & Low Confidence Objects</h3>
                                 <p class="text-xs text-slate-400">Objects flagged with confidence &lt; 70% or labeled as 'unknown'</p>
                             </div>
+                            
+                            <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                                <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs">
+                                    <label for="filter-misclass-class" class="text-slate-500 font-semibold text-[11px] whitespace-nowrap">Class:</label>
+                                    <select id="filter-misclass-class" onchange="filterMisclassifications()" class="bg-transparent border-none focus:outline-none text-xs font-bold text-slate-700 cursor-pointer">
+                                        <option value="all">All Classes</option>
+                                    </select>
+                                </div>
+
+                                <button onclick="resetMisclassFilters()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-semibold transition">
+                                    <i class="fa-solid fa-rotate-right mr-1"></i> Reset
+                                </button>
+                            </div>
                         </div>
+
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs text-slate-600">
                                 <thead class="bg-slate-50 uppercase text-[10px] font-bold text-slate-400 border-b border-slate-100">
@@ -256,14 +296,54 @@
                                     </tr>
                                 </thead>
                                 <tbody id="misclass-table-body" class="divide-y divide-slate-100">
-                                    <!-- Dynamic Misclassification Rows -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
-                <!-- TAB 4: COMPLETE LOGS SCREEN -->
+                <!-- Correct Data Tab -->
+                <section id="tab-correct" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4">
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800">Correct Classifications & High Confidence Objects</h3>
+                                <p class="text-xs text-slate-400">Objects verified with confidence &ge; 70%</p>
+                            </div>
+                            
+                            <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                                <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs">
+                                    <label for="filter-correct-class" class="text-slate-500 font-semibold text-[11px] whitespace-nowrap">Class:</label>
+                                    <select id="filter-correct-class" onchange="filterCorrect()" class="bg-transparent border-none focus:outline-none text-xs font-bold text-slate-700 cursor-pointer">
+                                        <option value="all">All Classes</option>
+                                    </select>
+                                </div>
+
+                                <button onclick="resetCorrectFilters()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-semibold transition">
+                                    <i class="fa-solid fa-rotate-right mr-1"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-600">
+                                <thead class="bg-slate-50 uppercase text-[10px] font-bold text-slate-400 border-b border-slate-100">
+                                    <tr>
+                                        <th class="p-3">Captured Frame</th>
+                                        <th class="p-3">Detected Label</th>
+                                        <th class="p-3">Confidence Score</th>
+                                        <th class="p-3">Date</th>
+                                        <th class="p-3">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="correct-table-body" class="divide-y divide-slate-100">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Data Table Logs Tab -->
                 <section id="tab-logs" class="hidden space-y-6">
                     <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
                         <h3 class="text-sm font-bold text-slate-800 mb-4">Full Sorting Telemetry Logs</h3>
@@ -279,7 +359,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="logs-table-body" class="divide-y divide-slate-100">
-                                    <!-- Dynamic Rows -->
                                 </tbody>
                             </table>
                         </div>
@@ -287,62 +366,89 @@
                 </section>
             </div>
 
-<footer class="mt-8 pt-5 pb-5 border-t border-slate-200/80 bg-white/80 -mx-4 md:-mx-6 -mb-4 md:-mb-6 px-6 rounded-b-2xl shadow-sm">
-    <div class="flex flex-col xl:flex-row items-center justify-between gap-4">
-        
-        <div class="flex items-center shrink-0">
-            <div class="flex flex-col gap-1.5 bg-slate-100/90 border border-slate-200/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                <div class="flex items-center gap-2 text-slate-800 font-bold text-xs">
-                    <i class="fa-solid fa-user-gear text-indigo-600"></i>
-                    <span>Mg Aung Ko Phyoe</span>
-                    <span class="text-[11px] text-indigo-700 bg-indigo-50 font-bold px-2 py-0.5 rounded-lg border border-indigo-100">
-                        BEEC VI-1
-                    </span>
+            <footer class="mt-8 pt-5 pb-5 border-t border-slate-200/80 bg-white/80 -mx-4 md:-mx-6 -mb-4 md:-mb-6 px-6 rounded-b-2xl shadow-sm">
+                <div class="flex flex-col xl:flex-row items-center justify-between gap-4">
+                    
+                    <div class="flex items-center shrink-0">
+                        <div class="flex flex-col gap-1.5 bg-slate-100/90 border border-slate-200/80 px-3.5 py-2 rounded-xl shadow-2xs">
+                            <div class="flex items-center gap-2 text-slate-800 font-bold text-xs">
+                                <i class="fa-solid fa-user-gear text-indigo-600"></i>
+                                <span>Mg Aung Ko Phyoe</span>
+                                <span class="text-[11px] text-indigo-700 bg-indigo-50 font-bold px-2 py-0.5 rounded-lg border border-indigo-100">
+                                    BEEC VI-1
+                                </span>
+                            </div>
+                            <div class="text-[11px] font-semibold text-slate-600 flex items-center gap-1.5">
+                                <i class="fa-solid fa-graduation-cap text-xs text-indigo-600"></i>
+                                <span>Department of Electronic Engineering</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center shrink-0">
+                        <div class="flex flex-wrap items-center justify-center gap-2 bg-slate-100/60 border border-slate-200/60 p-1.5 rounded-xl">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
+                                <i class="fa-solid fa-brain text-indigo-600 text-xs"></i> TinyML
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
+                                <i class="fa-solid fa-microchip text-indigo-600 text-xs"></i> ESP32
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
+                                <i class="fa-solid fa-camera text-indigo-600 text-xs"></i> ESP32-CAM
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
+                                <i class="fa-solid fa-robot text-indigo-600 text-xs"></i> Servo Arm
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
+                                <i class="fa-brands fa-node-js text-indigo-600 text-xs"></i> Node.js
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center shrink-0">
+                        <div class="flex flex-col gap-0.5 bg-slate-100/90 border border-slate-200/80 px-3.5 py-2 rounded-xl shadow-2xs text-center xl:text-right">
+                            <h4 class="text-xs font-bold text-slate-800 flex items-center justify-center xl:justify-end gap-1.5 tracking-tight">
+                                <i class="fa-solid fa-building-columns text-indigo-600"></i>
+                                Technological University (Monywa)
+                            </h4>
+                            <p class="text-[11px] font-medium text-slate-500">
+                                &copy; 2026 All Rights Reserved.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="text-[11px] font-semibold text-slate-600 flex items-center gap-1.5">
-                    <i class="fa-solid fa-graduation-cap text-xs text-indigo-600"></i>
-                    <span>Department of Electronic Engineering</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex items-center justify-center shrink-0">
-            <div class="flex flex-wrap items-center justify-center gap-2 bg-slate-100/60 border border-slate-200/60 p-1.5 rounded-xl">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
-                    <i class="fa-solid fa-brain text-indigo-600 text-xs"></i> TinyML
-                </span>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
-                    <i class="fa-solid fa-microchip text-indigo-600 text-xs"></i> ESP32
-                </span>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
-                    <i class="fa-solid fa-camera text-indigo-600 text-xs"></i> ESP32-CAM
-                </span>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
-                    <i class="fa-solid fa-robot text-indigo-600 text-xs"></i> Servo Arm
-                </span>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
-                    <i class="fa-brands fa-node-js text-indigo-600 text-xs"></i> Node.js
-                </span>
-            </div>
-        </div>
-
-        <div class="flex items-center shrink-0">
-            <div class="flex flex-col gap-0.5 bg-slate-100/90 border border-slate-200/80 px-3.5 py-2 rounded-xl shadow-2xs text-center xl:text-right">
-                <h4 class="text-xs font-bold text-slate-800 flex items-center justify-center xl:justify-end gap-1.5 tracking-tight">
-                    <i class="fa-solid fa-building-columns text-indigo-600"></i>
-                    Technological University (Monywa)
-                </h4>
-                <p class="text-[11px] font-medium text-slate-500">
-                    &copy; 2026 All Rights Reserved.
-                </p>
-            </div>
-        </div>
-
-    </div>
-</footer>
+            </footer>
         </main>
     </div>
 
+    <div id="password-modal" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-bold text-slate-800">Change Password</h3>
+                <button onclick="closeChangePasswordModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <form onsubmit="handlePasswordChangeSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Current Password</label>
+                    <input type="password" id="current-pass" required placeholder="••••••••" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">New Password</label>
+                    <input type="password" id="new-password" required placeholder="••••••••" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs">
+                </div>
+                <button type="submit" class="w-full py-3 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 transition">
+                    Update Password
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script src="js/dashboard.js"></script>
+    <script src="js/login.js"></script>
+
 </body>
 </html>

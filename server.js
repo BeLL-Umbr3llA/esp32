@@ -26,30 +26,53 @@ cloudinary.config({
 
 // MongoDB Connection Setup
 const mongoURI = process.env.MONGODB_URI;
-let isConnected = false;
+
 
 const connectDB = async () => {
-    if (isConnected || mongoose.connection.readyState === 1) {
-        isConnected = true;
+    // 1 ဖြစ်နေရင် (Connected ဖြစ်နေရင်) ရှေ့ဆက်ရန်
+    if (mongoose.connection.readyState === 1) {
         return;
     }
+    
+    // Connecting ဖြစ်နေဆဲအချိန်တွင် နောက်ထပ် connect ထပ်မခေါ်ရန်
+    if (mongoose.connection.readyState === 2) {
+        console.log('⏳ Waiting for existing MongoDB connection...');
+        return;
+    }
+
     try {
         await mongoose.connect(mongoURI, { 
-            serverSelectionTimeoutMS: 5000, 
-            family: 4 
+            serverSelectionTimeoutMS: 5000,
+            // family: 4 ကို ဖယ်ရှားလိုက်ပါ (ဒါကြောင့် Network / Atlas Timeout ခကြာခဏ ဖြစ်တတ်ပါသည်)
         });
-        isConnected = true;
         console.log('🍃 Connected to MongoDB Atlas');
     } catch (err) {
         console.error('❌ Database Connection Error:', err.message);
+        // DB ချိတ်ဆက်မှု မရပါက Error Throw လုပ်ပေးရမည်
+        throw new Error('Database Connection Failed: ' + err.message);
     }
 };
 
 // Express Middleware for Vercel / Serverless support
 app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        // DB မရပါက API ကို ဆက်မသွားစေဘဲ 500 Error တိုက်ရိုက် ပြန်ပေးမည်
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Database connection fail ဖြစ်နေပါသည်။ ကျေးဇူးပြု၍ MongoDB Atlas IP Whitelist သို့မဟုတ် MONGO_URI ကို စစ်ဆေးပါ။' 
+        });
+    }
+});
+
+
+// Express Middleware for Vercel / Serverless support
+app.use(async (req, res, next) => {
     await connectDB();
     next();
-});
+})
 
 // Mongoose Schema & Model (ESP32 Data)
 const esp32GroupSchema = new mongoose.Schema({

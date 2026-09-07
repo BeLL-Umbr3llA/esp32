@@ -109,7 +109,7 @@
                 <button onclick="toggleSidebar()" class="md:hidden text-slate-600 p-2 rounded-lg hover:bg-slate-100">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
-                <h2 id="page-title" class="text-sm md:text-base font-bold text-slate-800">TinyML-Powered Robotic Sorting System Dashboard<span class="text-xs font-normal text-slate-400"> Live</span></h2>
+                <h2 id="page-title" class="text-sm md:text-base font-bold text-slate-800">Robotic Sorting System Dashboard<span class="text-xs font-normal text-slate-400"> Live</span></h2>
             </div>
 
             <div class="flex items-center gap-3">
@@ -365,60 +365,63 @@
                     </div>
                 </section>
             </div>
-
-            <footer class="mt-8 pt-5 pb-5 border-t border-slate-200/80 bg-white/80 -mx-4 md:-mx-6 -mb-4 md:-mb-6 px-6 rounded-b-2xl shadow-sm">
-                <div class="flex flex-col xl:flex-row items-center justify-between gap-4">
-                    
-                    <div class="flex items-center shrink-0">
-                        <div class="flex flex-col gap-1.5 bg-slate-100/90 border border-slate-200/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                            <div class="flex items-center gap-2 text-slate-800 font-bold text-xs">
-                                <i class="fa-solid fa-user-gear text-indigo-600"></i>
-                                <span>Mg Aung Ko Phyoe</span>
-                                <span class="text-[11px] text-indigo-700 bg-indigo-50 font-bold px-2 py-0.5 rounded-lg border border-indigo-100">
-                                    BEEC VI-1
-                                </span>
-                            </div>
-                            <div class="text-[11px] font-semibold text-slate-600 flex items-center gap-1.5">
-                                <i class="fa-solid fa-graduation-cap text-xs text-indigo-600"></i>
-                                <span>Department of Electronic Engineering</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-center shrink-0">
-                        <div class="flex flex-wrap items-center justify-center gap-2 bg-slate-100/60 border border-slate-200/60 p-1.5 rounded-xl">
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
-                                <i class="fa-solid fa-brain text-indigo-600 text-xs"></i> TinyML
-                            </span>
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
-                                <i class="fa-solid fa-microchip text-indigo-600 text-xs"></i> ESP32
-                            </span>
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
-                                <i class="fa-solid fa-camera text-indigo-600 text-xs"></i> ESP32-CAM
-                            </span>
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
-                                <i class="fa-solid fa-robot text-indigo-600 text-xs"></i> Servo Arm
-                            </span>
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-mono text-xs font-semibold shadow-2xs">
-                                <i class="fa-brands fa-node-js text-indigo-600 text-xs"></i> Node.js
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center shrink-0">
-                        <div class="flex flex-col gap-0.5 bg-slate-100/90 border border-slate-200/80 px-3.5 py-2 rounded-xl shadow-2xs text-center xl:text-right">
-                            <h4 class="text-xs font-bold text-slate-800 flex items-center justify-center xl:justify-end gap-1.5 tracking-tight">
-                                <i class="fa-solid fa-building-columns text-indigo-600"></i>
-                                Technological University (Monywa)
-                            </h4>
-                            <p class="text-[11px] font-medium text-slate-500">
-                                &copy; 2026 All Rights Reserved.
-                            </p>
-                        </div>
-                    </div>
-
+<footer class="mt-8 pt-5 pb-5 border-t border-slate-200/80 bg-white/80 -mx-4 md:-mx-6 -mb-4 md:-mb-6 px-4 md:px-6 rounded-b-2xl shadow-sm">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+        
+        <!-- User Info -->
+        <div class="flex items-center justify-center md:justify-start w-full md:w-auto">
+            <div class="flex flex-col sm:flex-row items-center gap-2.5 bg-slate-100/90 border border-slate-200/80 px-4 py-2.5 rounded-2xl shadow-2xs w-full sm:w-auto justify-center">
+                <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs shrink-0">
+                    <i class="fa-solid fa-user-graduate"></i>
                 </div>
-            </footer>
+                <div class="text-center sm:text-left">
+                    <div class="flex items-center justify-center sm:justify-start gap-2 text-slate-800 font-bold text-xs">
+                        <span>Mg Aung Ko Phyoe</span>
+                        <span class="text-[10px] text-indigo-700 bg-indigo-50 font-bold px-2 py-0.5 rounded-md border border-indigo-100">
+                            BEEC VI-1
+                        </span>
+                    </div>
+                    <p class="text-[11px] font-medium text-slate-500">Dept. of Electronic Engineering</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tech Stack Badges (Mobile မှာ Row အလိုက် သေသပ်စေရန်) -->
+        <div class="flex items-center justify-center w-full md:w-auto overflow-x-auto py-1">
+            <div class="flex flex-wrap items-center justify-center gap-1.5 bg-slate-100/60 border border-slate-200/60 p-2 rounded-2xl max-w-full">
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white border border-slate-200 text-slate-700 font-mono text-[11px] font-semibold shadow-2xs">
+                    <i class="fa-solid fa-brain text-indigo-600 text-[10px]"></i> TinyML
+                </span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white border border-slate-200 text-slate-700 font-mono text-[11px] font-semibold shadow-2xs">
+                    <i class="fa-solid fa-microchip text-indigo-600 text-[10px]"></i> ESP32
+                </span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white border border-slate-200 text-slate-700 font-mono text-[11px] font-semibold shadow-2xs">
+                    <i class="fa-solid fa-camera text-indigo-600 text-[10px]"></i> CAM
+                </span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white border border-slate-200 text-slate-700 font-mono text-[11px] font-semibold shadow-2xs">
+                    <i class="fa-solid fa-robot text-indigo-600 text-[10px]"></i> Servo
+                </span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white border border-slate-200 text-slate-700 font-mono text-[11px] font-semibold shadow-2xs">
+                    <i class="fa-brands fa-node-js text-indigo-600 text-[10px]"></i> Node.js
+                </span>
+            </div>
+        </div>
+
+        <!-- University & Copyright -->
+        <div class="flex items-center justify-center md:justify-end w-full md:w-auto">
+            <div class="flex flex-col gap-0.5 bg-slate-100/90 border border-slate-200/80 px-4 py-2.5 rounded-2xl shadow-2xs text-center md:text-right w-full sm:w-auto">
+                <h4 class="text-xs font-bold text-slate-800 flex items-center justify-center md:justify-end gap-1.5 tracking-tight">
+                    <i class="fa-solid fa-building-columns text-indigo-600"></i>
+                    Technological University (Monywa)
+                </h4>
+                <p class="text-[10px] font-medium text-slate-500">
+                    &copy; 2026 All Rights Reserved.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</footer>
         </main>
     </div>
 

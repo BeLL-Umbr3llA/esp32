@@ -1,26 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>System Login & Thesis Documentation - TinyML Robotic Sorting</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
     <!-- Google Sign-In SDK -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body class="bg-[#f4f6f9] text-slate-700 antialiased min-h-screen flex flex-col justify-between selection:bg-indigo-600 selection:text-white overflow-x-hidden">
+<body class="bg-[#f4f6f9] text-slate-700 antialiased min-h-screen flex flex-col justify-between selection:bg-indigo-600 selection:text-white overflow-x-hidden w-full">
 
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-indigo-100/60 blur-3xl"></div>
         <div class="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-blue-100/60 blur-3xl"></div>
     </div>
 
-    <!-- Mobile-Optimized Header -->
+    <!-- Header Section -->
     <header class="relative z-10 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-3 sm:px-8 py-3 flex flex-row items-center justify-between gap-2 shadow-xs">
         <div class="flex items-center gap-2 min-w-0">
             <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-200 shrink-0">
@@ -44,255 +48,972 @@
         </div>
     </header>
 
-    <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-10 flex items-center justify-center">
+    <!-- Main Content Wrapper -->
+    <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-8 flex flex-col items-center justify-center min-w-0">
 
-        <div id="view-preview" class="w-full space-y-4 sm:space-y-10">
+        <!-- Thesis Documentation Preview View -->
+       <div id="view-preview" class="w-full space-y-4 sm:space-y-8">
+
+<!-- Main Header Section Outer Card with Enhanced 3D Depth, Shadows & Glowing Borders -->
+<div class="relative w-full bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-2xl shadow-indigo-900/10 hover:shadow-indigo-900/15 transition-all duration-500 space-y-6 overflow-hidden border-t-4 border-t-indigo-600">
+    
+    <!-- Top Ambient Soft Glow Background Effect -->
+    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-indigo-500/15 blur-3xl pointer-events-none"></div>
+
+    <!-- Top Bar: Badge & Academic Year (Mobile view တွင် အလယ်သို့ ရောက်စေရန် ပြင်ဆင်ထားသည်) -->
+    <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-3 pb-4 border-b border-slate-100 text-center sm:text-left">
+        <div class="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 bg-indigo-50/90 border border-indigo-200/80 text-indigo-700 rounded-full text-xs sm:text-sm font-bold tracking-wide uppercase shadow-2xs">
+            <i class="fa-solid fa-graduation-cap text-indigo-600"></i>
+            <span>Technological University (Monywa)</span>
+        </div>
+        <span class="text-[11px] sm:text-xs font-extrabold text-slate-400 tracking-widest uppercase">
+            2025-2026 Academic Year
+        </span>
+    </div>
+
+    <!-- Hero Content Grid -->
+    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center w-full">
+        
+        <!-- Project Image Container with Deep 3D Shadow Frame -->
+        <div class="lg:col-span-5 w-full">
+            <div class="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border-2 border-slate-200/90 bg-gradient-to-br from-slate-50 to-indigo-50/30 group hover:border-indigo-400 transition-all duration-500">
+                <img 
+                    src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789335037/1788991858717.png" 
+                    alt="Thesis Picture...." 
+                    class="w-full h-full object-cover sm:object-contain lg:object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/10 via-transparent to-transparent pointer-events-none"></div>
+            </div>
+        </div>
+
+        <!-- Title & Metadata -->
+        <div class="lg:col-span-7 flex flex-col justify-center space-y-6 text-center lg:text-left w-full">
             
-            <!-- Hero Title Section with Proper Spacing -->
-            <div class="text-center max-w-3xl mx-auto space-y-3 px-1">
-                <span class="inline-block px-3 py-1 bg-indigo-50 border border-indigo-200/80 text-indigo-600 rounded-full text-[10px] sm:text-[11px] font-extrabold tracking-wide uppercase shadow-2xs">2025-2026 Academic Year</span>
-                <h2 class="text-lg sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-snug">
-                    Object Classification and Robotic Sorting System using Tiny-Machine Learning
-                </h2>
-                <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed text-justify sm:text-center px-1">
-                    A comprehensive edge-AI solution integrating ESP32-CAM vision modules, MobileNetV2 transfer learning via Edge Impulse, and automated robotic sorting.
-                </p>
-
-                <div class="pt-1 flex flex-col sm:flex-row items-center justify-center gap-2.5 text-[11px] sm:text-xs font-semibold text-slate-700">
-                    <div class="px-3.5 py-2.5 bg-white border border-slate-200/90 rounded-2xl shadow-2xs flex items-center gap-2 w-full sm:w-auto justify-center">
-                        <i class="fa-solid fa-user-graduate text-indigo-600 text-xs sm:text-sm"></i>
-                        <span>Researched by: <strong class="text-slate-900">Mg Aung Ko Phyoe</strong></span>
-                    </div>
-                    <div class="px-3.5 py-2.5 bg-white border border-slate-200/90 rounded-2xl shadow-2xs flex items-center gap-2 w-full sm:w-auto justify-center">
-                        <i class="fa-solid fa-chalkboard-user text-indigo-600 text-xs sm:text-sm"></i>
-                        <span>Supervised by: <strong class="text-slate-900">Daw Tin Nyo Maw</strong></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Abstract Section -->
-            <div class="bg-white border border-slate-200/85 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 shadow-xs space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3 cursor-pointer select-none" onclick="toggleSection('abstract-content', 'abstract-arrow')">
-                    <h3 class="text-xs sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-                        <i class="fa-solid fa-file-lines text-indigo-600"></i>Abstract
-                    </h3>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100/60 hidden sm:inline-block">Project Summary</span>
-                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 transition-transform duration-300 rotate-180 shrink-0" id="abstract-arrow">
-                            <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 gap-2.5 sm:gap-4 transition-all duration-300" id="abstract-content" style="display: none;">
-                    
-                    <div class="group relative flex items-start gap-3 p-3.5 sm:p-5 bg-gradient-to-r from-slate-50/70 via-slate-50/30 to-transparent rounded-xl sm:rounded-2xl border border-slate-200/60">
-                        <span class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center justify-center text-indigo-600 font-bold text-[10px] sm:text-xs">01</span>
-                        <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
-                            This thesis presents an object classification and robotic sorting system that utilizes <strong class="text-slate-900 font-semibold">Tiny-Machine Learning</strong> with an <strong class="text-slate-900 font-semibold">ESP32-CAM</strong> and a central <strong class="text-slate-900 font-semibold">ESP32</strong> connected via a serial <strong class="text-slate-900 font-semibold">UART</strong> interface.
-                        </p>
-                    </div>
-
-                    <div class="group relative flex items-start gap-3 p-3.5 sm:p-5 bg-gradient-to-r from-slate-50/70 via-slate-50/30 to-transparent rounded-xl sm:rounded-2xl border border-slate-200/60">
-                        <span class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center justify-center text-indigo-600 font-bold text-[10px] sm:text-xs">02</span>
-                        <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
-                            A custom <strong class="text-slate-900 font-semibold">MobileNetV2</strong> model was trained in Edge Impulse Studio using a <strong class="text-slate-900 font-semibold">96x96 pixel resolution</strong>, grayscale input channels, and a <strong class="text-slate-900 font-semibold">16-neuron dense layer</strong>, achieving <strong class="text-slate-900 font-semibold">97.6% accuracy</strong>.
-                        </p>
-                    </div>
-
-                    <div class="group relative flex items-start gap-3 p-3.5 sm:p-5 bg-gradient-to-r from-slate-50/70 via-slate-50/30 to-transparent rounded-xl sm:rounded-2xl border border-slate-200/60">
-                        <span class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center justify-center text-indigo-600 font-bold text-[10px] sm:text-xs">03</span>
-                        <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
-                            Classification classes, confidence scores, and captured images are packaged into <strong class="text-slate-900 font-semibold">JSON payloads</strong> and transmitted via <strong class="text-slate-900 font-semibold">HTTP POST</strong> requests to a <strong class="text-slate-900 font-semibold">Node.js and Express.js</strong> backend hosted on <strong class="text-slate-900 font-semibold">Vercel</strong>.
-                        </p>
-                    </div>
-
-                    <div class="group relative flex items-start gap-3 p-3.5 sm:p-5 bg-gradient-to-r from-slate-50/70 via-slate-50/30 to-transparent rounded-xl sm:rounded-2xl border border-slate-200/60">
-                        <span class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center justify-center text-indigo-600 font-bold text-[10px] sm:text-xs">04</span>
-                        <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
-                            The backend securely manages data storage by uploading image files to <strong class="text-slate-900 font-semibold">Cloudinary</strong> and recording operational data within a <strong class="text-slate-900 font-semibold">MongoDB</strong> database.
-                        </p>
-                    </div>
-
-                    <div class="group relative flex items-start gap-3 p-3.5 sm:p-5 bg-gradient-to-r from-slate-50/70 via-slate-50/30 to-transparent rounded-xl sm:rounded-2xl border border-slate-200/60">
-                        <span class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white border border-slate-200/80 shadow-2xs flex items-center justify-center text-indigo-600 font-bold text-[10px] sm:text-xs">05</span>
-                        <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
-                            A web dashboard built with <strong class="text-slate-900 font-semibold">HTML and Tailwind CSS</strong> is powered by the system to facilitate comprehensive <strong class="text-slate-900 font-semibold">real-time monitoring</strong> and historical analytics.
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- System Technology Architecture Section -->
-            <div class="bg-white border border-slate-200/85 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 shadow-xs space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3 cursor-pointer select-none" onclick="toggleSection('tech-content', 'tech-arrow')">
-                    <h3 class="text-xs sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-                        <i class="fa-solid fa-microchip text-indigo-600"></i>System Technology Architecture
-                    </h3>
-                    <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 transition-transform duration-300 rotate-180 shrink-0" id="tech-arrow">
-                        <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
+            <!-- Main Project Title (စာကြောင်း ၃ ကြောင်း သီးခြားစီ ခွဲခြားထားပါသည်) -->
+            <div class="space-y-2">
+                <h1 class="flex flex-col gap-1.5 sm:gap-2 text-slate-900 font-extrabold tracking-tight">
+                    <!-- ပထမလိုင်း -->
+                    <span class="text-base sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl uppercase text-slate-600 font-bold leading-snug drop-shadow-2xs">
+                        Design and Implementation of
                     </span>
-                </div>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 transition-all duration-300" id="tech-content" style="display: none;">
-                    
-                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
-                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-brain text-indigo-600"></i> Edge Impulse & MobileNetV2
-                        </h4>
-                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                            Transfer learning using pre-trained <strong>MobileNetV2</strong> optimized on <strong>Edge Impulse</strong> for efficient micro-controller image inference.
-                        </p>
-                    </div>
-
-                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
-                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-camera text-indigo-600"></i> ESP32-CAM & ESP32
-                        </h4>
-                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                            <strong>ESP32-CAM</strong> acts as the vision capture node (OV2640 sensor), communicating with the main <strong>ESP32</strong> controller managing real-time tasks.
-                        </p>
-                    </div>
-
-                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
-                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-gears text-indigo-600"></i> Conveyor & Servo Arms
-                        </h4>
-                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                            A <strong>DC motor</strong> drives the conveyor belt through motor drivers, while precise <strong>servo motors</strong> control the robotic sorting gates.
-                        </p>
-                    </div>
-
-                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
-                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-server text-indigo-600"></i> Node.js & Express Backend
-                        </h4>
-                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                            RESTful API server built using <strong>Node.js and Express</strong> to receive classification events from the hardware edge node.
-                        </p>
-                    </div>
-
-                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
-                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-database text-indigo-600"></i> MongoDB Cloud Database
-                        </h4>
-                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                            Secure cloud storage utilizing <strong>MongoDB</strong> to retain history logs, confidence metrics, and misclassification records.
-                        </p>
-                    </div>
-
-                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
-                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-cloud text-indigo-600"></i> Vercel Cloud Hosting
-                        </h4>
-                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                            The admin dashboard and cloud backend are hosted on <strong>Vercel</strong> for fast, global availability and live data streaming.
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- System Workflow Section -->
-           <div class="bg-white border border-slate-200/85 p-4 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl shadow-xs space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3 cursor-pointer select-none" onclick="toggleSection('workflow-content', 'workflow-arrow')">
-                    <h3 class="text-xs sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-                        <i class="fa-solid fa-diagram-project text-indigo-600"></i>System Workflow
-                    </h3>
-                    <div class="flex items-center gap-2">
-                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 transition-transform duration-300 rotate-180 shrink-0" id="workflow-arrow">
-                            <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 transition-all duration-300" id="workflow-content" style="display: none;">
-                    
-                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[9px] sm:text-[10px] font-black tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase">Step 01</span>
-                            <i class="fa-solid fa-conveyor-belt text-slate-400 text-xs"></i>
-                        </div>
-                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800">Conveyor Feed</h4>
-                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">DC motor precisely moves the product under the ESP32-CAM active optical field.</p>
-                    </div>
-
-                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[9px] sm:text-[10px] font-black tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase">Step 02</span>
-                            <i class="fa-solid fa-microchip text-slate-400 text-xs"></i>
-                        </div>
-                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800">TinyML Inference</h4>
-                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">Optimized MobileNetV2 model classifies the item locally at the edge.</p>
-                    </div>
-
-                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[9px] sm:text-[10px] font-black tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase">Step 03</span>
-                            <i class="fa-solid fa-robot text-slate-400 text-xs"></i>
-                        </div>
-                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800">Robotic Sorting</h4>
-                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">High-torque servo arm dynamically directs the item into its designated bin.</p>
-                    </div>
-
-                    <div class="p-3.5 sm:p-5 bg-slate-50/80 rounded-xl sm:rounded-2xl border border-slate-200/60 space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[9px] sm:text-[10px] font-black tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase">Step 04</span>
-                            <i class="fa-solid fa-cloud-arrow-up text-slate-400 text-xs"></i>
-                        </div>
-                        <h4 class="text-[11px] sm:text-sm font-bold text-slate-800">Cloud Logging</h4>
-                        <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">MongoDB seamlessly stores real-time telemetry via Node.js API hosted on Vercel.</p>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Test and Results Section -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 shadow-xs space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3 cursor-pointer select-none" onclick="toggleSection('test-content', 'test-arrow')">
-                    <div>
-                        <h3 class="text-xs sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-                            <i class="fa-solid fa-chart-line text-indigo-600"></i> Test and Results
-                        </h3>
-                        <p class="text-[10px] sm:text-[11px] text-slate-400 mt-0.5">Evaluation metrics of classification accuracy and hardware performance.</p>
-                    </div>
-                    <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 transition-transform duration-300 shrink-0" id="test-arrow">
-                        <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
+                    <!-- ဒုတိယလိုင်း -->
+                    <span class="text-lg sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl uppercase text-slate-900 font-black leading-snug drop-shadow-xs">
+                        Object Classification and Robotic Sorting System
                     </span>
+                    <!-- တတိယလိုင်း -->
+                    <span class="text-base sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl uppercase text-indigo-600 font-black leading-snug drop-shadow-2xs">
+                        Using Tiny-Machine Learning
+                    </span>
+                </h1>
+                
+                <!-- Decorative Bar with Glow -->
+                <div class="flex items-center justify-center lg:justify-start gap-1.5 pt-3">
+                    <span class="h-1.5 w-12 bg-indigo-600 rounded-full shadow-sm shadow-indigo-500/50"></span>
+                    <span class="h-1.5 w-2.5 bg-indigo-300 rounded-full"></span>
+                </div>
+            </div>
+
+            <!-- Info Cards (Researched by & Supervised by) with Soft 3D Elevation -->
+            <div class="pt-2 flex flex-col sm:flex-row items-stretch gap-3 text-xs sm:text-sm font-semibold text-slate-700 w-full">
+                
+                <!-- Researcher Card -->
+                <div class="flex-1 px-4 py-3.5 bg-gradient-to-r from-slate-50/90 via-white to-indigo-50/20 border border-slate-200/90 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 transition-all duration-300 flex items-center gap-3.5 group">
+                    <div class="w-9 h-9 rounded-lg sm:rounded-xl bg-indigo-50 border border-indigo-200/80 text-indigo-600 flex items-center justify-center shrink-0 shadow-xs group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-all duration-300">
+                        <i class="fa-solid fa-user-graduate text-sm"></i>
+                    </div>
+                    <div class="text-left min-w-0">
+                        <span class="block text-[10px] text-indigo-600 font-extrabold tracking-wider uppercase">Researched by</span>
+                        <strong class="text-slate-900 text-xs sm:text-sm font-bold truncate block">Mg Aung Ko Phyoe</strong>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 transition-all duration-300" id="test-content">
-                    <div class="bg-slate-50/80 border border-slate-200/80 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 space-y-2.5">
-                        <div class="flex items-center justify-between text-[11px] sm:text-xs font-bold text-slate-800">
-                            <span><i class="fa-solid fa-camera text-indigo-600 mr-1"></i> Hardware Prototype Setup</span>
-                        </div>
-                        <div class="w-full h-36 sm:h-44 bg-slate-200/75 rounded-xl flex flex-col items-center justify-center text-slate-400 text-[11px] sm:text-xs border border-dashed border-slate-300 p-3 text-center">
-                            <i class="fa-solid fa-image text-xl sm:text-2xl mb-1 text-slate-400"></i>
-                            <span>[ Insert Hardware Prototype Test Photo Here ]</span>
-                        </div>
-                        <p class="text-[10px] sm:text-[11px] text-slate-500 text-justify">
-                            Shows physical assembly of ESP32-CAM mounted above the conveyor belt and servo sorting arms.
-                        </p>
+                <!-- Supervisor Card -->
+                <div class="flex-1 px-4 py-3.5 bg-gradient-to-r from-slate-50/90 via-white to-indigo-50/20 border border-slate-200/90 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-300 transition-all duration-300 flex items-center gap-3.5 group">
+                    <div class="w-9 h-9 rounded-lg sm:rounded-xl bg-indigo-50 border border-indigo-200/80 text-indigo-600 flex items-center justify-center shrink-0 shadow-xs group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-all duration-300">
+                        <i class="fa-solid fa-chalkboard-user text-sm"></i>
                     </div>
+                    <div class="text-left min-w-0">
+                        <span class="block text-[10px] text-indigo-600 font-extrabold tracking-wider uppercase">Supervised by</span>
+                        <strong class="text-slate-900 text-xs sm:text-sm font-bold truncate block">Daw Tin Nyo Maw</strong>
+                    </div>
+                </div>
 
-                    <div class="bg-slate-50/80 border border-slate-200/80 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 space-y-2.5">
-                        <div class="flex items-center justify-between text-[11px] sm:text-xs font-bold text-slate-800">
-                            <span><i class="fa-solid fa-chart-pie text-indigo-600 mr-1"></i> Edge Impulse Results</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Abstract Card -->
+<div class="relative bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-all duration-500 space-y-4 overflow-hidden border-t-2 border-indigo-500 w-full">
+    
+    <!-- Top Soft Glow Background Effect -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-12 bg-indigo-50/50 blur-2xl pointer-events-none"></div>
+
+    <!-- Header Section -->
+    <div class="flex items-center justify-between border-b border-slate-100 pb-1 cursor-pointer select-none group" onclick="toggleSection('abstract-content', 'abstract-arrow')">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-indigo-50 border border-indigo-100/80 flex items-center justify-center text-indigo-600 shadow-2xs group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                <i class="fa-solid fa-file-lines text-xs sm:text-sm"></i>
+            </div>
+            <div>
+                <h3 class="text-xs sm:text-base font-black text-slate-900 tracking-tight">Abstract</h3>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-2">
+            <span class="text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100/60 hidden sm:inline-block tracking-wide">
+                Project Summary
+            </span>
+            <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-500 group-hover:text-indigo-600 group-hover:border-indigo-200 transition-all duration-300 shrink-0 shadow-2xs" id="abstract-arrow">
+                <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
+            </span>
+        </div>
+    </div>
+    
+    <!-- Abstract Points Container (Smooth Transition Classes Added) -->
+    <div class="grid grid-cols-1 gap-3 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out" id="abstract-content">
+        
+        <!-- Item 01 -->
+        <div class="group relative flex items-start gap-3.5 sm:gap-4 p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300">
+            <span class="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white group-hover:bg-indigo-600 border border-slate-200/80 group-hover:border-indigo-600 text-slate-600 group-hover:text-white font-black text-[11px] sm:text-xs flex items-center justify-center transition-all duration-300 shadow-2xs">
+                01
+            </span>
+            <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                This thesis presents an object classification and robotic sorting system that utilizes <strong class="text-slate-900 font-bold">Tiny-Machine Learning</strong> with an <strong class="text-slate-900 font-bold">ESP32-CAM</strong> and a central <strong class="text-slate-900 font-bold">ESP32</strong> connected via a serial <strong class="text-slate-900 font-bold">UART</strong> interface.
+            </p>
+        </div>
+
+        <!-- Item 02 -->
+        <div class="group relative flex items-start gap-3.5 sm:gap-4 p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300">
+            <span class="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white group-hover:bg-indigo-600 border border-slate-200/80 group-hover:border-indigo-600 text-slate-600 group-hover:text-white font-black text-[11px] sm:text-xs flex items-center justify-center transition-all duration-300 shadow-2xs">
+                02
+            </span>
+            <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                A custom <strong class="text-slate-900 font-bold">MobileNetV2</strong> model was trained in Edge Impulse Studio using a <strong class="text-slate-900 font-bold">96x96 pixel resolution</strong>, grayscale input channels, and a <strong class="text-slate-900 font-bold">16-neuron dense layer</strong>, achieving <strong class="text-indigo-600 font-extrabold">97.6% accuracy</strong>.
+            </p>
+        </div>
+        
+        <!-- Item 03 -->
+        <div class="group relative flex items-start gap-3.5 sm:gap-4 p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300">
+            <span class="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white group-hover:bg-indigo-600 border border-slate-200/80 group-hover:border-indigo-600 text-slate-600 group-hover:text-white font-black text-[11px] sm:text-xs flex items-center justify-center transition-all duration-300 shadow-2xs">
+                03
+            </span>
+            <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                The ESP32-Cam performs <strong class="text-slate-900 font-bold">object classification</strong> based on Tiny-ML model<strong class="text-slate-900 font-bold"> without requring internet</strong>, while the central ESP32 receives <strong class="text-slate-900 font-bold">IR sensor inputs, controls conveyors</strong>, and <strong class="text-slate-900 font-semibold">robotic arms</strong>.
+            </p>
+        </div>
+
+        <!-- Item 04 -->
+        <div class="group relative flex items-start gap-3.5 sm:gap-4 p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300">
+            <span class="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white group-hover:bg-indigo-600 border border-slate-200/80 group-hover:border-indigo-600 text-slate-600 group-hover:text-white font-black text-[11px] sm:text-xs flex items-center justify-center transition-all duration-300 shadow-2xs">
+                04
+            </span>
+            <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                Classification classes, confidence scores, and captured images are packaged into <strong class="text-slate-900 font-bold">JSON payloads</strong> and transmitted via <strong class="text-slate-900 font-bold">HTTP POST</strong> requests to a <strong class="text-slate-900 font-bold">Node.js and Express.js</strong> backend hosted on <strong class="text-slate-900 font-bold">Vercel</strong>.
+            </p>
+        </div>
+
+        <!-- Item 05 -->
+        <div class="group relative flex items-start gap-3.5 sm:gap-4 p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300">
+            <span class="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white group-hover:bg-indigo-600 border border-slate-200/80 group-hover:border-indigo-600 text-slate-600 group-hover:text-white font-black text-[11px] sm:text-xs flex items-center justify-center transition-all duration-300 shadow-2xs">
+                05
+            </span>
+            <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                The backend securely manages data storage by uploading image files to <strong class="text-slate-900 font-bold">Cloudinary</strong> and recording operational data within a <strong class="text-slate-900 font-bold">MongoDB</strong> database.
+            </p>
+        </div>
+
+        <!-- Item 06 -->
+        <div class="group relative flex items-start gap-3.5 sm:gap-4 p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300">
+            <span class="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white group-hover:bg-indigo-600 border border-slate-200/80 group-hover:border-indigo-600 text-slate-600 group-hover:text-white font-black text-[11px] sm:text-xs flex items-center justify-center transition-all duration-300 shadow-2xs">
+                06
+            </span>
+            <p class="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-medium pt-0.5 text-justify">
+                A web dashboard built with <strong class="text-slate-900 font-bold">HTML and Tailwind CSS</strong> is powered by the system to facilitate comprehensive <strong class="text-slate-900 font-bold">real-time monitoring</strong> and <strong class="text-slate-900 font-bold">historical analytics</strong>.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- System Technology Architecture Section -->
+<div class="relative bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-all duration-500 space-y-4 overflow-hidden border-t-2 border-indigo-500 w-full">
+    
+    <!-- Top Soft Glow Background Effect -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-12 bg-indigo-50/50 blur-2xl pointer-events-none"></div>
+
+    <!-- Header Section -->
+    <div class="flex items-center justify-between border-b border-slate-100 pb-1 cursor-pointer select-none group" onclick="toggleSection('tech-content', 'tech-arrow')">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-indigo-50 border border-indigo-100/80 flex items-center justify-center text-indigo-600 shadow-2xs group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                <i class="fa-solid fa-microchip text-xs sm:text-sm"></i>
+            </div>
+            <div>
+                <h3 class="text-xs sm:text-base font-black text-slate-900 tracking-tight">System Technology Architecture</h3>
+            </div>
+        </div>
+        
+        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-500 group-hover:text-indigo-600 group-hover:border-indigo-200 transition-all duration-300 shrink-0 shadow-2xs" id="tech-arrow">
+            <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
+        </span>
+    </div>
+    
+    <!-- Architecture Items Container (Smooth Transition Classes Added) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out w-full" id="tech-content">
+        
+        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
+                <i class="fa-solid fa-brain text-indigo-600 shrink-0"></i> Edge Impulse & MobileNetV2
+            </h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                Transfer learning using pre-trained <strong>MobileNetV2</strong> optimized on <strong>Edge Impulse</strong> for efficient micro-controller image inference.
+            </p>
+        </div>
+
+        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
+                <i class="fa-solid fa-camera text-indigo-600 shrink-0"></i> ESP32-CAM & ESP32
+            </h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                <strong>ESP32-CAM</strong> acts as the vision capture node (OV2640 sensor), communicating with the main <strong>ESP32</strong> controller managing real-time tasks.
+            </p>
+        </div>
+
+        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
+                <i class="fa-solid fa-gears text-indigo-600 shrink-0"></i> Conveyor & Servo Arms
+            </h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                A <strong>DC motor</strong> drives the conveyor belt through motor drivers, while precise <strong>servo motors</strong> control the robotic sorting gates.
+            </p>
+        </div>
+
+        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
+                <i class="fa-solid fa-server text-indigo-600 shrink-0"></i> Node.js & Express Backend
+            </h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                RESTful API server built using <strong>Node.js and Express</strong> to receive classification events from the hardware edge node.
+            </p>
+        </div>
+
+        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
+                <i class="fa-solid fa-database text-indigo-600 shrink-0"></i> MongoDB Cloud Database
+            </h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                Secure cloud storage utilizing <strong>MongoDB</strong> to retain history logs, confidence metrics, and misclassification records.
+            </p>
+        </div>
+
+        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
+                <i class="fa-solid fa-cloud text-indigo-600 shrink-0"></i> Vercel Cloud Hosting
+            </h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
+                The admin dashboard and cloud backend are hosted on <strong>Vercel</strong> for fast, global availability and live data streaming.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- System  Result Section -->
+<div class="relative w-full bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl shadow-indigo-900/5 hover:shadow-2xl hover:shadow-indigo-900/10 transition-all duration-500 space-y-6 overflow-hidden border-t-2 border-t-indigo-500">
+                
+    <!-- Header Section -->
+    <div class="flex items-center justify-between border-b border-slate-100 pb-3 cursor-pointer select-none group" onclick="toggleSection('test-content', 'test-arrow')">
+        <div class="min-w-0">
+            <h3 class="text-xs sm:text-base font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                <span class="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100/80 flex items-center justify-center text-indigo-600 shadow-2xs group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shrink-0">
+                    <i class="fa-solid fa-chart-line text-xs sm:text-sm"></i>
+                </span>
+                The Overall System Results
+            </h3>
+        
+        </div>
+        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-500 group-hover:text-indigo-600 group-hover:border-indigo-200 transition-all duration-300 rotate-180 shrink-0 ml-2 shadow-2xs" id="test-arrow">
+            <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
+        </span>
+    </div>
+
+                <div class="space-y-6 transition-all duration-300 w-full" id="test-content">
+                    
+                    <!-- Hardware Setup & Specs -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                        
+                        <!-- Hardware Card -->
+                        <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 space-y-3 flex flex-col justify-between w-full min-w-0">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5 truncate">
+                                    <i class="fa-solid fa-camera text-indigo-600 shrink-0"></i> Demonstration Video
+                                </span>
+                                <span class="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100 shrink-0">ESP32-CAM Setup</span>
+                            </div>
+                            <div class="w-full aspect-video bg-slate-100 rounded-xl overflow-hidden border border-slate-200 relative">
+                                <img src="https://github.com/BeLL-Umbr3llA/esp32/blob/main/public/1788991858717.png?raw=true" alt="Hardware Setup" class="w-full h-full object-cover">
+                            </div>
+                            <p class="text-[11px] text-slate-500 text-justify">
+                                Hardware configuration with ESP32-CAM, DC conveyor belt, and servo robotic arm sorting mechanism.
+                            </p>
                         </div>
-                        <div class="w-full h-36 sm:h-44 bg-slate-200/75 rounded-xl flex flex-col items-center justify-center text-slate-400 text-[11px] sm:text-xs border border-dashed border-slate-300 p-3 text-center">
-                            <i class="fa-solid fa-chart-bar text-xl sm:text-2xl mb-1 text-slate-400"></i>
-                            <span>[ Insert Edge Impulse Model Graph Here ]</span>
-                        </div>
-                        <p class="text-[10px] sm:text-[11px] text-slate-500 text-justify">
-                            MobileNetV2 transfer learning validation graph showing high confidence distribution across object categories.
-                        </p>
+
+                    <div class="bg-gradient-to-b from-white to-slate-50/90 rounded-3xl p-4 sm:p-6 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.18),0_10px_20px_-5px_rgba(79,70,229,0.08)] border border-slate-200/90 border-t-white/100 space-y-4 w-full max-w-md sm:max-w-none mx-auto relative">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
+        <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center text-indigo-600 shrink-0 shadow-[0_4px_10px_rgba(0,0,0,0.06)]">
+                <i class="fa-solid fa-microchip text-xs"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-black text-slate-900 tracking-tight truncate">Edge AI Deployment Metrics</span>
+        </div>
+        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white text-emerald-600 border border-emerald-200/80 shrink-0 shadow-[0_2px_6px_rgba(16,185,129,0.1)]">Edge Impulse</span>
+    </div>
+
+    <!-- Top Highlight Cards: Model Accuracy & Frameworks (3D Pop-out Effect) -->
+    <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
+        <div class="p-3.5 bg-gradient-to-br from-indigo-50/80 to-indigo-100/40 rounded-2xl border border-indigo-200/80 shadow-[0_8px_20px_rgba(79,70,229,0.12)] flex flex-col justify-center relative overflow-hidden">
+            <span class="text-[9px] sm:text-[10px] font-bold text-indigo-600 uppercase tracking-wider flex items-center gap-1">
+                <i class="fa-solid fa-bullseye text-[10px]"></i> Model Accuracy
+            </span>
+            <span class="text-base sm:text-xl font-black text-slate-900 mt-0.5">97.6%</span>
+        </div>
+        <div class="p-3.5 bg-gradient-to-br from-white to-slate-100/80 rounded-2xl border border-slate-200/80 shadow-[0_8px_20px_rgba(0,0,0,0.06)] flex flex-col justify-center">
+            <span class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                <i class="fa-solid fa-code text-[10px]"></i> Frameworks
+            </span>
+            <span class="text-xs sm:text-sm font-extrabold text-slate-800 mt-0.5 truncate">TensorFlow & Keras</span>
+        </div>
+    </div>
+
+    <!-- SRAM & PSRAM Matched 3D Cards -->
+    <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
+        <div class="p-3.5 bg-gradient-to-br from-indigo-50/50 to-white rounded-2xl border border-indigo-100/90 shadow-[0_6px_15px_rgba(79,70,229,0.08)] flex flex-col justify-center">
+            <span class="text-[9px] sm:text-[10px] font-bold text-indigo-500 uppercase tracking-wider flex items-center gap-1">
+                <i class="fa-solid fa-memory text-[10px]"></i> SRAM Memory
+            </span>
+            <span class="text-xs sm:text-sm font-black text-indigo-950 mt-0.5">248.6 KB</span>
+        </div>
+        <div class="p-3.5 bg-gradient-to-br from-indigo-50/50 to-white rounded-2xl border border-indigo-100/90 shadow-[0_6px_15px_rgba(79,70,229,0.08)] flex flex-col justify-center">
+            <span class="text-[9px] sm:text-[10px] font-bold text-indigo-500 uppercase tracking-wider flex items-center gap-1">
+                <i class="fa-solid fa-hard-drive text-[10px]"></i> PSRAM Memory
+            </span>
+            <span class="text-xs sm:text-sm font-black text-indigo-950 mt-0.5">532.08 KB</span>
+        </div>
+    </div>
+
+    <!-- Structured List / Specifications (Debossed / Inset 3D Depth) -->
+    <div class="bg-gradient-to-b from-slate-100/80 to-slate-50 rounded-2xl border border-slate-200/90 p-3 space-y-2.5 shadow-[inset_0_3px_6px_rgba(0,0,0,0.04)]">
+        
+        <!-- Dataset -->
+        <div class="flex items-center justify-between text-xs py-1.5 border-b border-slate-200/60 gap-2 px-1">
+            <span class="font-bold text-slate-400 uppercase text-[10px] flex items-center gap-1.5 shrink-0">
+                <i class="fa-solid fa-database w-4 text-center text-indigo-500"></i> Dataset
+            </span>
+            <span class="font-bold text-slate-800 text-right truncate">500 images per class <span class="text-indigo-600 font-normal">(80:20 Split)</span></span>
+        </div>
+
+        <!-- Captured Conditions -->
+        <div class="flex items-center justify-between text-xs py-1.5 border-b border-slate-200/60 gap-2 px-1">
+            <span class="font-bold text-slate-400 uppercase text-[10px] flex items-center gap-1.5 shrink-0">
+                <i class="fa-solid fa-camera-retro w-4 text-center text-indigo-500"></i> Conditions
+            </span>
+            <span class="font-bold text-slate-800 text-right">3.5" distance & top view </span>
+        </div>
+
+        <!-- Preprocessing -->
+        <div class="flex items-center justify-between text-xs py-1.5 border-b border-slate-200/60 gap-2 px-1">
+            <span class="font-bold text-slate-400 uppercase text-[10px] flex items-center gap-1.5 shrink-0">
+                <i class="fa-solid fa-sliders w-4 text-center text-indigo-500"></i> Preprocessing
+            </span>
+            <span class="font-bold text-slate-800 text-right">96×96 Grayscale + Augmentation</span>
+        </div>
+
+        <!-- Architecture -->
+        <div class="flex items-center justify-between text-xs py-1.5 border-b border-slate-200/60 gap-2 px-1">
+            <span class="font-bold text-slate-400 uppercase text-[10px] flex items-center gap-1.5 shrink-0">
+                <i class="fa-solid fa-network-wired w-4 text-center text-indigo-500"></i> Architecture
+            </span>
+            <span class="font-bold text-slate-800 text-right">MobileNetV2 <span class="text-indigo-600">(α = 0.35)</span></span>
+        </div>
+
+        <!-- Training Config -->
+        <div class="flex items-center justify-between text-xs py-1.5 gap-2 px-1">
+            <span class="font-bold text-slate-400 uppercase text-[10px] flex items-center gap-1.5 shrink-0">
+                <i class="fa-solid fa-gears w-4 text-center text-indigo-500"></i> Training Config & Learning rate
+            </span>
+            <span class="font-bold text-slate-800 text-right">50 Epochs |  0.0005 (Adam)</span>
+        </div>
+
+    </div>
+
+    <!-- Footer Note -->
+    <p class="text-[11px] text-slate-500 text-center font-medium pt-0.5 leading-relaxed">
+        Edge Impulse INT8 quantized model exported as a C++ header file for local hardware-based classification on ESP32-CAM.
+    </p>
+</div>
+                    </div>
+                </div>
+</div>
+
+           <!-- ALL 4 OBJECT CLASSES CONTAINED IN A SINGLE COMPREHENSIVE CARD -->
+<div class="relative bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-all duration-500 space-y-4 overflow-hidden border-t-2 border-indigo-500 w-full">
+    
+    <!-- Top Soft Glow Background Effect -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-12 bg-indigo-50/50 blur-2xl pointer-events-none"></div>
+
+    <!-- Main Card Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3 gap-2 pt-1">
+        <div>
+            <h4 class="text-xs sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
+                <i class="fa-solid fa-microchip text-indigo-600 shrink-0"></i> 
+                <span> Object Classification & Robotic Sorting System</span>
+            </h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5"> 3 class classification with handling unknown object </p>
+        </div>
+        <div>
+            <span class="text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100/60 tracking-wide">
+                MobileNetV2 & Embedded System
+            </span>
+        </div>
+    </div>
+
+        <!-- Inner Container Group for all Classes -->
+        <div class="space-y-4">
+
+            <!-- ==================== CLASS 1: RELAY MODULE ==================== -->
+ <div class="bg-white border border-slate-200 rounded-2xl p-3 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
+        
+        <!-- Dropdown Header Button -->
+        <button type="button" onclick="toggleDropdown('relay-section', 'relay-arrow')" class="w-full flex items-center justify-between gap-2 pb-3 border-b border-slate-100 text-left focus:outline-none cursor-pointer select-none group">
+            <div class="flex items-start sm:items-center gap-3 min-w-0">
+                <span class="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100/80 text-indigo-600 flex items-center justify-center text-xs font-black shrink-0 shadow-2xs group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 mt-0.5 sm:mt-0">01</span>
+                <div class="min-w-0">
+                    <h5 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center flex-wrap gap-1.5 tracking-tight">
+                        <span class="truncate">Class 1: Relay Module</span>
+                        <code class="text-[10px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-100 text-indigo-600 border border-slate-200/80 font-mono shadow-2xs">relay</code>
+                    </h5>
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <span class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="hidden xs:inline">Classification Results for 'Relay'</span> 
+                </span>
+                <i id="relay-arrow" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-300"></i>
+            </div>
+        </button>
+
+        <!-- Collapsible Content Grid (Hidden by default) -->
+        <div id="relay-section" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch pt-3 sm:pt-4">
+            
+            <!-- 4 Samples -->
+            <div class="lg:col-span-7 grid grid-cols-2 gap-2 sm:gap-3">
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789296927/R1.png" alt="Detection" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 1</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Detection Result for 'Relay'</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789296927/R2.png" alt="Classification" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 2</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Classification Result for 'Relay'</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789296928/R3.png" alt="Picking up" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 3</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Picking up 'Relay'</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789296928/R4.png" alt="Placing" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 4</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Placing 'Relay'</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Acknowledgement Section -->
-            <div class="bg-indigo-50/60 border border-indigo-100 rounded-2xl sm:rounded-3xl p-4 sm:p-8 text-center space-y-2">
+            <!-- Live Stream View (Step 5) -->
+            <div class="lg:col-span-5 bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 sm:p-3 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                <div class="space-y-1.5 sm:space-y-2">
+                    <div class="flex items-center justify-between px-0.5">
+                        <span class="text-[9px] sm:text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-desktop"></i> Web Dashboard 
+                        </span>
+                        <span class="bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 5</span>
+                    </div>
+                    <div class="relative w-full aspect-video bg-white rounded-lg overflow-hidden border border-slate-200/80 flex items-center justify-center">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789296927/R5.png" alt="Real-Time Stream" class="w-full h-full object-contain p-1">
+                    </div>
+                </div>
+
+<div class="space-y-2.5 sm:space-y-3">
+    <!-- Updated Header Label & Step Badge -->
+    <div class="flex items-center justify-between px-1">
+        <span class="text-xs sm:text-sm font-extrabold text-blue-600 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-microchip text-sm"></i> On-Device AI Execution
+        </span>
+        <span class="bg-blue-100 text-blue-700 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-md border border-blue-200">Offline Mode</span>
+    </div>
+
+    <!-- Larger Text Content Box -->
+    <div class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-blue-100 shadow-xs space-y-3">
+        
+        <!-- Point 1 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Offline AI Classification:</strong> The TinyML model runs completely inside the ESP32-CAM device without requiring internet access.
+            </p>
+        </div>
+
+        <!-- Point 2 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Remote Monitoring Only:</strong> Wi-Fi is used only for monitoring captured images and classified results on the web dashboard.
+            </p>
+        </div>
+
+        <!-- Point 3 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Full System Autonomy:</strong> The system continues classifying and operating pick-and-place locally even if the Wi-Fi network disconnects.
+            </p>
+        </div>
+
+    </div>
+</div>
+                
+                <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 pt-2 border-t border-slate-200/60 mt-2 px-0.5">
+                    <span class="truncate">Local Edge AI & Robotic Sorting with Wi-Fi Monitoring</span>
+                </div>
+            </div>
+            
+
+
+            
+        </div>
+    </div>
+
+            <!-- ==================== CLASS 2: GAS SENSOR ==================== -->
+<div class="bg-white border border-slate-200 rounded-2xl p-3 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
+        
+        <!-- Dropdown Header Button -->
+        <button type="button" onclick="toggleDropdown('gas-section', 'gas-arrow')" class="w-full flex items-center justify-between gap-2 pb-3 border-b border-slate-100 text-left focus:outline-none cursor-pointer select-none group">
+            <div class="flex items-start sm:items-center gap-3 min-w-0">
+                <span class="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100/80 text-indigo-600 flex items-center justify-center text-xs font-black shrink-0 shadow-2xs group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 mt-0.5 sm:mt-0">02</span>
+                <div class="min-w-0">
+                    <h5 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center flex-wrap gap-1.5 tracking-tight">
+                        <span class="truncate">Class 2: Gas Sensor</span>
+                        <code class="text-[10px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-100 text-indigo-600 border border-slate-200/80 font-mono shadow-2xs">gas_sensor</code>
+                    </h5>
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <span class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="hidden xs:inline">Classification Results for 'Gas Sensor'</span>
+                </span>
+                <i id="gas-arrow" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-300"></i>
+            </div>
+        </button>
+
+        <!-- Collapsible Content Grid -->
+        <div id="gas-section" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch pt-3 sm:pt-4">
+            
+            <div class="lg:col-span-7 grid grid-cols-2 gap-2 sm:gap-3">
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299476/G1.png" alt="Detection" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 1</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Detection Result for 'Gas Sensor'</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299476/G2.png" alt="Classification" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 2</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Classification Result for 'Gas Sensor'</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299476/G3.png" alt="Picking up" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 3</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Picking up 'Gas Sensor'</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299476/G4.png" alt="Placing" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 4</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Placing 'Gas Sensor'</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Stream View (Step 5) -->
+            <div class="lg:col-span-5 bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 sm:p-3 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                <div class="space-y-1.5 sm:space-y-2">
+                    <div class="flex items-center justify-between px-0.5">
+                        <span class="text-[9px] sm:text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-desktop"></i> Web Dashboard
+                        </span>
+                        <span class="bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 5</span>
+                    </div>
+                    <div class="relative w-full aspect-video bg-white rounded-lg overflow-hidden border border-slate-200/80 flex items-center justify-center">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299476/G5.png" alt="Real-Time Stream" class="w-full h-full object-contain p-1">
+                    </div>
+                </div>
+
+<div class="space-y-2.5 sm:space-y-3">
+    <!-- Updated Header Label & Step Badge -->
+    <div class="flex items-center justify-between px-1">
+        <span class="text-xs sm:text-sm font-extrabold text-blue-600 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-microchip text-sm"></i> On-Device AI Execution
+        </span>
+        <span class="bg-blue-100 text-blue-700 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-md border border-blue-200">Offline Mode</span>
+    </div>
+
+    <!-- Larger Text Content Box -->
+    <div class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-blue-100 shadow-xs space-y-3">
+        
+        <!-- Point 1 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Offline AI Classification:</strong> The TinyML model runs completely inside the ESP32-CAM device without requiring internet access.
+            </p>
+        </div>
+
+        <!-- Point 2 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Remote Monitoring Only:</strong> Wi-Fi is used only for monitoring captured images and classified results on the web dashboard.
+            </p>
+        </div>
+
+        <!-- Point 3 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Full System Autonomy:</strong> The system continues classifying and operating pick-and-place locally even if the Wi-Fi network disconnects.
+            </p>
+        </div>
+
+    </div>
+</div>
+                
+                <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 pt-2 border-t border-slate-200/60 mt-2 px-0.5">
+                    <span class="truncate">Local Edge AI & Robotic Sorting with Wi-Fi Monitoring</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- ==================== CLASS 3: ULTRASONIC SENSOR ==================== -->
+<div class="bg-white border border-slate-200 rounded-2xl p-3 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
+        
+        <!-- Dropdown Header Button -->
+        <button type="button" onclick="toggleDropdown('ultrasonic-section', 'ultrasonic-arrow')" class="w-full flex items-center justify-between gap-2 pb-3 border-b border-slate-100 text-left focus:outline-none cursor-pointer select-none group">
+            <div class="flex items-start sm:items-center gap-3 min-w-0">
+                <span class="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100/80 text-indigo-600 flex items-center justify-center text-xs font-black shrink-0 shadow-2xs group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 mt-0.5 sm:mt-0">03</span>
+                <div class="min-w-0">
+                    <h5 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center flex-wrap gap-1.5 tracking-tight">
+                        <span class="truncate">Class 3: Ultrasonic Sensor</span>
+                        <code class="text-[10px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-100 text-indigo-600 border border-slate-200/80 font-mono shadow-2xs">ultrasonic</code>
+                    </h5>
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <span class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="hidden xs:inline">Classification Results for 'Ultrasonic Sensor'</span>
+                </span>
+                <i id="ultrasonic-arrow" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-300"></i>
+            </div>
+        </button>
+
+        <!-- Collapsible Content Grid -->
+        <div id="ultrasonic-section" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch pt-3 sm:pt-4">
+            
+            <div class="lg:col-span-7 grid grid-cols-2 gap-2 sm:gap-3">
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299476/U1.png" alt="Detection" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 1</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Detection Result</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299476/U2.png" alt="Classification" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 2</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Classification Result</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299476/U3.png" alt="Picking up" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 3</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Picking up 'Ultrasonic'</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299476/U4.png" alt="Placing" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 4</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Placing 'Ultrasonic'</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Stream View (Step 5) -->
+            <div class="lg:col-span-5 bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 sm:p-3 flex flex-col justify-between hover:border-indigo-300 transition-all">
+                <div class="space-y-1.5 sm:space-y-2">
+                    <div class="flex items-center justify-between px-0.5">
+                        <span class="text-[9px] sm:text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-desktop"></i> Web Dashboard
+                        </span>
+                        <span class="bg-indigo-100 text-indigo-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-indigo-200">Step: 5</span>
+                    </div>
+                    <div class="relative w-full aspect-video bg-white rounded-lg overflow-hidden border border-slate-200/80 flex items-center justify-center">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299476/U5.png" alt="Real-Time Stream" class="w-full h-full object-contain p-1">
+                    </div>
+                </div>
+               <div class="space-y-2.5 sm:space-y-3">
+    <!-- Updated Header Label & Step Badge -->
+    <div class="flex items-center justify-between px-1">
+        <span class="text-xs sm:text-sm font-extrabold text-blue-600 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-microchip text-sm"></i> On-Device AI Execution
+        </span>
+        <span class="bg-blue-100 text-blue-700 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-md border border-blue-200">Offline Mode</span>
+    </div>
+
+    <!-- Larger Text Content Box -->
+    <div class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-blue-100 shadow-xs space-y-3">
+        
+        <!-- Point 1 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Offline AI Classification:</strong> The TinyML model runs completely inside the ESP32-CAM device without requiring internet access.
+            </p>
+        </div>
+
+        <!-- Point 2 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Remote Monitoring Only:</strong> Wi-Fi is used only for monitoring captured images and classified results on the web dashboard.
+            </p>
+        </div>
+
+        <!-- Point 3 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Full System Autonomy:</strong> The system continues classifying and operating pick-and-place locally even if the Wi-Fi network disconnects.
+            </p>
+        </div>
+
+    </div>
+</div>
+                
+                <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 pt-2 border-t border-slate-200/60 mt-2 px-0.5">
+                    <span class="truncate">Local Edge AI & Robotic Sorting with Wi-Fi Monitoring</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- ==================== CLASS 4: UNKNOWN OBJECT ==================== -->
+<div class="bg-white border border-rose-200/80 rounded-2xl p-3 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
+        
+        <!-- Dropdown Header Button -->
+        <button type="button" onclick="toggleDropdown('unknown-section', 'unknown-arrow')" class="w-full flex items-center justify-between gap-2 pb-3 border-b border-rose-100 text-left focus:outline-none cursor-pointer select-none group">
+            <div class="flex items-start sm:items-center gap-3 min-w-0">
+                <span class="w-8 h-8 rounded-xl bg-rose-50 border border-rose-100/80 text-rose-600 flex items-center justify-center text-xs font-black shrink-0 shadow-2xs group-hover:bg-rose-600 group-hover:text-white transition-all duration-300 mt-0.5 sm:mt-0">04</span>
+                <div class="min-w-0">
+                    <h5 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center flex-wrap gap-1.5 tracking-tight">
+                        <span class="truncate">Class 4: Unknown Object</span>
+                        <code class="text-[10px] sm:text-xs px-2 py-0.5 rounded-md bg-rose-50 text-rose-600 border border-rose-200/80 font-mono shadow-2xs">unknown</code>
+                    </h5>
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <span class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                    <i class="fa-solid fa-triangle-exclamation text-[8px]"></i>
+                    <span class="hidden xs:inline">Rejected / Unknown</span>
+                </span>
+                <i id="unknown-arrow" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-300"></i>
+            </div>
+        </button>
+
+        <!-- Collapsible Content Grid -->
+        <div id="unknown-section" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch pt-3 sm:pt-4">
+            
+            <div class="lg:col-span-7 grid grid-cols-2 gap-2 sm:gap-3">
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-rose-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299479/K1.png" alt="Detection" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-rose-100 text-rose-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-rose-200">Step: 1</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Detection Result</span>
+                        <span class="text-amber-600 font-black shrink-0 ml-1">Reject</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-rose-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299478/K2.png" alt="Classification" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-rose-100 text-rose-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-rose-200">Step: 2</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Classification Result</span>
+                        <span class="text-amber-600 font-black shrink-0 ml-1">Reject</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-rose-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299479/K3.png" alt="Diverting" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-rose-100 text-rose-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-rose-200">Step: 3</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Picking up....</span>
+                        <span class="text-amber-600 font-black shrink-0 ml-1">Reject</span>
+                    </div>
+                </div>
+
+                <div class="group bg-slate-50 border border-slate-200/80 rounded-xl p-1.5 sm:p-2 flex flex-col justify-between hover:border-rose-300 transition-all">
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200/60">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299477/K4.png" alt="Disposing" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <span class="absolute top-1 left-1 bg-rose-100 text-rose-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-rose-200">Step: 4</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 mt-1.5 px-0.5">
+                        <span class="truncate">Rejecting.....</span>
+                        <span class="text-amber-600 font-black shrink-0 ml-1">Reject</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Stream View (Step 5) -->
+            <div class="lg:col-span-5 bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 sm:p-3 flex flex-col justify-between hover:border-rose-300 transition-all">
+                <div class="space-y-1.5 sm:space-y-2">
+                    <div class="flex items-center justify-between px-0.5">
+                        <span class="text-[9px] sm:text-[10px] font-extrabold text-rose-600 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-desktop"></i> Web Dashboard
+                        </span>
+                        <span class="bg-rose-100 text-rose-700 text-[7px] sm:text-[8px] font-bold px-1.5 py-0.5 rounded border border-rose-200">Step 5</span>
+                    </div>
+                    <div class="relative w-full aspect-video bg-white rounded-lg overflow-hidden border border-slate-200/80 flex items-center justify-center">
+                        <img src="https://res.cloudinary.com/dk3dwmnce/image/upload/v1789299475/K5.png" alt="Real-Time Stream" class="w-full h-full object-contain p-1">
+                    </div>
+                </div>
+                <div class="space-y-2.5 sm:space-y-3">
+    <!-- Updated Header Label & Step Badge -->
+    <div class="flex items-center justify-between px-1">
+        <span class="text-xs sm:text-sm font-extrabold text-blue-600 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-microchip text-sm"></i> On-Device AI Execution
+        </span>
+        <span class="bg-blue-100 text-blue-700 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-md border border-blue-200">Offline Mode</span>
+    </div>
+
+    <!-- Larger Text Content Box -->
+    <div class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-blue-100 shadow-xs space-y-3">
+        
+        <!-- Point 1 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Offline AI Classification:</strong> The TinyML model runs completely inside the ESP32-CAM device without requiring internet access.
+            </p>
+        </div>
+
+        <!-- Point 2 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Remote Monitoring Only:</strong> Wi-Fi is used only for monitoring captured images and classified results on the web dashboard.
+            </p>
+        </div>
+
+        <!-- Point 3 -->
+        <div class="flex items-start gap-2.5">
+            <div class="w-5 h-5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong class="text-slate-900 font-extrabold">Full System Autonomy:</strong> The system continues classifying and operating pick-and-place locally even if the Wi-Fi network disconnects.
+            </p>
+        </div>
+
+    </div>
+</div>
+                
+                <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-700 pt-2 border-t border-slate-200/60 mt-2 px-0.5">
+                    <span class="truncate">Local Edge AI & Robotic Sorting with Wi-Fi Monitoring</span>
+                </div>
+            </div>
+        </div>
+    
+
+        </div>
+
+
+    </div>
+</div>
+
+<!-- acknowledgement -->
+             <div class="bg-indigo-50/60 border border-indigo-100 rounded-2xl sm:rounded-3xl p-4 sm:p-8 text-center space-y-2">
                 <h3 class="text-[11px] sm:text-sm font-extrabold text-indigo-900 uppercase tracking-wider">Acknowledgement & Gratitude </h3>
                 <p class="text-[11px] sm:text-sm text-indigo-700/90 max-w-2xl mx-auto leading-relaxed text-justify sm:text-center px-1">
                     Final Year - Thesis အောင်မြင်စွာ ပြီးမြောက်နိုင်ရန်အတွက် အကြံဉာဏ်များ ပေး၍ လမ်းညွှန်ပြသပေးကြပါသော Technological University (Monywa), Department of Electronic Engineering မှ ဆရာ/ဆရာမများ အားလုံးကို လှိုက်လှဲစွာ ကျေးဇူးတင်ရှိကြောင်း ဖော်ပြအပ်ပါသည်။
@@ -306,9 +1027,9 @@
                 </button>
             </div>
 
-        </div>
+</div>
 
-        <!-- System Login View -->
+   <!-- System Login View -->
         <div id="view-login" class="hidden w-full max-w-md bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col mx-auto">
             
             <div class="px-5 sm:px-8 pt-6 sm:pt-8 pb-5 text-center border-b border-slate-100 bg-slate-50/50">
@@ -377,16 +1098,16 @@
             </div>
 
         </div>
-
     </main>
 
-    <footer class="relative z-10 w-full bg-white/80 border-t border-slate-200/80 py-3 px-3 text-center">
-        <p class="text-[10px] sm:text-[11px] font-semibold text-slate-500 flex flex-wrap items-center justify-center gap-1.5">
-            <i class="fa-solid fa-building-columns text-indigo-600"></i>
-            Technological University (Monywa) — Department of Electronic Engineering
-        </p>
+    <!-- Footer Section -->
+    <footer class="relative z-10 w-full bg-white/80 border-t border-slate-200/80 py-3 text-center text-[10px] text-slate-400 font-medium">
+        © 2025-2026 TinyML Robotic Sorting System - Electronic Engineering Department
     </footer>
 
-    <script src="js/login.js"></script>
+
+     <script src="js/login.js"></script>
+    <!-- Interactive Script -->
+
 </body>
 </html>

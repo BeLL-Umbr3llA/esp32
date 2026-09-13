@@ -238,85 +238,97 @@
 
     </div>
 </div>
-
-
-<!-- System Technology Architecture Section -->
 <div class="relative bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-all duration-500 space-y-4 overflow-hidden border-t-2 border-indigo-500 w-full">
     
     <!-- Top Soft Glow Background Effect -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-12 bg-indigo-50/50 blur-2xl pointer-events-none"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-14 bg-indigo-50/60 blur-2xl pointer-events-none"></div>
 
     <!-- Header Section -->
-    <div class="flex items-center justify-between border-b border-slate-100 pb-1 cursor-pointer select-none group" onclick="toggleSection('tech-content', 'tech-arrow')">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-indigo-50 border border-indigo-100/80 flex items-center justify-center text-indigo-600 shadow-2xs group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                <i class="fa-solid fa-microchip text-xs sm:text-sm"></i>
+    <div class="flex items-center justify-between border-b border-slate-100 pb-3 cursor-pointer select-none group" onclick="toggleSection('tech-content', 'tech-arrow')">
+        <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-all duration-300">
+                <i class="fa-solid fa-layer-group text-sm"></i>
             </div>
             <div>
-                <h3 class="text-xs sm:text-base font-black text-slate-900 tracking-tight">System Technology Architecture</h3>
+                <h3 class="text-sm sm:text-base font-bold text-slate-900 tracking-tight">System Technology Architecture</h3>
+                <p class="text-[11px] text-slate-400 font-medium">Model, Hardware & Web Monitoring Stack</p>
             </div>
         </div>
         
-        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-500 group-hover:text-indigo-600 group-hover:border-indigo-200 transition-all duration-300 shrink-0 shadow-2xs" id="tech-arrow">
-            <i class="fa-solid fa-chevron-down text-[10px] sm:text-xs"></i>
+        <span class="w-8 h-8 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-500 group-hover:text-indigo-600 group-hover:border-indigo-200 transition-all duration-300 shrink-0 shadow-2xs" id="tech-arrow">
+            <i class="fa-solid fa-chevron-down text-xs"></i>
         </span>
     </div>
     
-    <!-- Architecture Items Container (Smooth Transition Classes Added) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out w-full" id="tech-content">
+    <!-- Architecture Items Container (3 Main Pillars) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out w-full" id="tech-content">
         
-        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
-            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
-                <i class="fa-solid fa-brain text-indigo-600 shrink-0"></i> Edge Impulse & MobileNetV2
-            </h4>
-            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                Transfer learning using pre-trained <strong>MobileNetV2</strong> optimized on <strong>Edge Impulse</strong> for efficient micro-controller image inference.
+        <!-- Pillar 1: Model Development (Indigo/Purple Theme) -->
+        <div class="p-4 bg-gradient-to-b from-indigo-50/40 to-slate-50/30 hover:from-indigo-100/70 hover:to-indigo-50/50 rounded-2xl border border-indigo-100/60 hover:border-indigo-400 shadow-2xs transition-all duration-300 space-y-3 w-full min-w-0">
+            <div class="flex items-center gap-2.5 pb-2 border-b border-indigo-100/60">
+                <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs shadow-inner">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-slate-900">Model Development</h4>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+                Edge AI classification model trained and optimized for microcontrollers.
             </p>
+            <div class="flex flex-wrap gap-1.5 pt-1">
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-indigo-50/80 text-indigo-700 rounded-lg border border-indigo-200/80 shadow-2xs hover:bg-indigo-600 hover:text-white transition-all duration-300">Python</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-indigo-50/80 text-indigo-700 rounded-lg border border-indigo-200/80 shadow-2xs hover:bg-indigo-600 hover:text-white transition-all duration-300">TensorFlow</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-indigo-50/80 text-indigo-700 rounded-lg border border-indigo-200/80 shadow-2xs hover:bg-indigo-600 hover:text-white transition-all duration-300">Keras</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-indigo-50/80 text-indigo-700 rounded-lg border border-indigo-200/80 shadow-2xs hover:bg-indigo-600 hover:text-white transition-all duration-300">MobileNetV2</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-indigo-50/80 text-indigo-700 rounded-lg border border-indigo-200/80 shadow-2xs hover:bg-indigo-600 hover:text-white transition-all duration-300">Edge Impulse</span>
+            </div>
         </div>
 
-        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
-            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
-                <i class="fa-solid fa-camera text-indigo-600 shrink-0"></i> ESP32-CAM & ESP32
-            </h4>
-            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                <strong>ESP32-CAM</strong> acts as the vision capture node (OV2640 sensor), communicating with the main <strong>ESP32</strong> controller managing real-time tasks.
+        <!-- Pillar 2: Hardware Stack (Amber/Orange Theme) -->
+        <div class="p-4 bg-gradient-to-b from-amber-50/40 to-slate-50/30 hover:from-amber-100/70 hover:to-amber-50/50 rounded-2xl border border-amber-100/60 hover:border-amber-400 shadow-2xs transition-all duration-300 space-y-3 w-full min-w-0">
+            <div class="flex items-center gap-2.5 pb-2 border-b border-amber-100/60">
+                <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-xs shadow-inner">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-slate-900">Hardware Stack</h4>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+                IoT components, sensors, and mechanical sorting control units.
             </p>
+            <div class="flex flex-wrap gap-1.5 pt-1">
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-50/80 text-amber-800 rounded-lg border border-amber-200/80 shadow-2xs hover:bg-amber-600 hover:text-white transition-all duration-300">ESP32-CAM</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-50/80 text-amber-800 rounded-lg border border-amber-200/80 shadow-2xs hover:bg-amber-600 hover:text-white transition-all duration-300">ESP32</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-50/80 text-amber-800 rounded-lg border border-amber-200/80 shadow-2xs hover:bg-amber-600 hover:text-white transition-all duration-300">IR Sensors</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-50/80 text-amber-800 rounded-lg border border-amber-200/80 shadow-2xs hover:bg-amber-600 hover:text-white transition-all duration-300">LCD</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-50/80 text-amber-800 rounded-lg border border-amber-200/80 shadow-2xs hover:bg-amber-600 hover:text-white transition-all duration-300">Motor Driver</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-50/80 text-amber-800 rounded-lg border border-amber-200/80 shadow-2xs hover:bg-amber-600 hover:text-white transition-all duration-300">DC Motor</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-50/80 text-amber-800 rounded-lg border border-amber-200/80 shadow-2xs hover:bg-amber-600 hover:text-white transition-all duration-300">Servo</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-50/80 text-amber-800 rounded-lg border border-amber-200/80 shadow-2xs hover:bg-amber-600 hover:text-white transition-all duration-300">LM2596</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-50/80 text-amber-800 rounded-lg border border-amber-200/80 shadow-2xs hover:bg-amber-600 hover:text-white transition-all duration-300">12V Adapter</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-50/80 text-amber-800 rounded-lg border border-amber-200/80 shadow-2xs hover:bg-amber-600 hover:text-white transition-all duration-300">C++</span>
+            </div>
         </div>
 
-        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
-            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
-                <i class="fa-solid fa-gears text-indigo-600 shrink-0"></i> Conveyor & Servo Arms
-            </h4>
-            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                A <strong>DC motor</strong> drives the conveyor belt through motor drivers, while precise <strong>servo motors</strong> control the robotic sorting gates.
+        <!-- Pillar 3: Web Dashboard Monitoring (Emerald/Green Theme) -->
+        <div class="p-4 bg-gradient-to-b from-emerald-50/40 to-slate-50/30 hover:from-emerald-100/70 hover:to-emerald-50/50 rounded-2xl border border-emerald-100/60 hover:border-emerald-400 shadow-2xs transition-all duration-300 space-y-3 w-full min-w-0">
+            <div class="flex items-center gap-2.5 pb-2 border-b border-emerald-100/60">
+                <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs shadow-inner">
+                    <i class="fa-solid fa-desktop"></i>
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-slate-900">Web Dashboard</h4>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+                Cloud backend and real-time monitoring interface for analytics.
             </p>
-        </div>
-
-        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
-            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
-                <i class="fa-solid fa-server text-indigo-600 shrink-0"></i> Node.js & Express Backend
-            </h4>
-            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                RESTful API server built using <strong>Node.js and Express</strong> to receive classification events from the hardware edge node.
-            </p>
-        </div>
-
-        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
-            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
-                <i class="fa-solid fa-database text-indigo-600 shrink-0"></i> MongoDB Cloud Database
-            </h4>
-            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                Secure cloud storage utilizing <strong>MongoDB</strong> to retain history logs, confidence metrics, and misclassification records.
-            </p>
-        </div>
-
-        <div class="p-3.5 sm:p-4 bg-slate-50/40 hover:bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200/60 hover:border-indigo-200 shadow-2xs transition-all duration-300 space-y-1.5 w-full min-w-0">
-            <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 truncate">
-                <i class="fa-solid fa-cloud text-indigo-600 shrink-0"></i> Vercel Cloud Hosting
-            </h4>
-            <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed text-justify">
-                The admin dashboard and cloud backend are hosted on <strong>Vercel</strong> for fast, global availability and live data streaming.
-            </p>
+            <div class="flex flex-wrap gap-1.5 pt-1">
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-emerald-50/80 text-emerald-800 rounded-lg border border-emerald-200/80 shadow-2xs hover:bg-emerald-600 hover:text-white transition-all duration-300">HTML</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-emerald-50/80 text-emerald-800 rounded-lg border border-emerald-200/80 shadow-2xs hover:bg-emerald-600 hover:text-white transition-all duration-300">Tailwind CSS</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-emerald-50/80 text-emerald-800 rounded-lg border border-emerald-200/80 shadow-2xs hover:bg-emerald-600 hover:text-white transition-all duration-300">JavaScript</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-emerald-50/80 text-emerald-800 rounded-lg border border-emerald-200/80 shadow-2xs hover:bg-emerald-600 hover:text-white transition-all duration-300">Node.js</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-emerald-50/80 text-emerald-800 rounded-lg border border-emerald-200/80 shadow-2xs hover:bg-emerald-600 hover:text-white transition-all duration-300">Express</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-emerald-50/80 text-emerald-800 rounded-lg border border-emerald-200/80 shadow-2xs hover:bg-emerald-600 hover:text-white transition-all duration-300">Cloudinary</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-emerald-50/80 text-emerald-800 rounded-lg border border-emerald-200/80 shadow-2xs hover:bg-emerald-600 hover:text-white transition-all duration-300">MongoDB</span>
+                <span class="px-2.5 py-1 text-[11px] font-medium bg-emerald-50/80 text-emerald-800 rounded-lg border border-emerald-200/80 shadow-2xs hover:bg-emerald-600 hover:text-white transition-all duration-300">Vercel</span>
+            </div>
         </div>
 
     </div>

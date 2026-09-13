@@ -272,3 +272,49 @@ window.addEventListener('click', function(e) {
             arrow.style.transform = 'rotate(180deg)';
         }
     }
+     function toggleSection(contentId, arrowId) {
+            const content = document.getElementById(contentId);
+            const arrow = document.getElementById(arrowId);
+            if (content.style.display === "none" || content.classList.contains('hidden')) {
+                content.style.display = "grid";
+                content.classList.remove('hidden');
+                arrow.classList.add('rotate-180');
+            } else {
+                content.style.display = "none";
+                content.classList.add('hidden');
+                arrow.classList.remove('rotate-180');
+            }
+        }
+
+        function toggleDropdown(sectionId, arrowId) {
+            const section = document.getElementById(sectionId);
+            const arrow = document.getElementById(arrowId);
+            if (section.classList.contains('hidden')) {
+                section.classList.remove('hidden');
+                arrow.classList.add('rotate-180');
+            } else {
+                section.classList.add('hidden');
+                arrow.classList.remove('rotate-180');
+            }
+        }
+
+function toggleSection(contentId, arrowId) {
+    const content = document.getElementById(contentId);
+    const arrow = document.getElementById(arrowId);
+    
+    // အကယ်၍ ပိတ်ထားလျှင် ဖွင့်မည် (Smooth transition အတွက် scrollHeight ကို ယူသုံးပါသည်)
+    if (content.classList.contains('opacity-0')) {
+        content.classList.remove('opacity-0', 'max-h-0');
+        content.classList.add('opacity-100');
+        content.style.maxHeight = content.scrollHeight + "px";
+        
+        if (arrow) arrow.classList.add('rotate-180');
+    } else {
+        // ဖွင့်ထားလျှင် ပိတ်မည်
+        content.style.maxHeight = "0px";
+        content.classList.remove('opacity-100');
+        content.classList.add('opacity-0', 'max-h-0');
+        
+        if (arrow) arrow.classList.remove('rotate-180');
+    }
+}

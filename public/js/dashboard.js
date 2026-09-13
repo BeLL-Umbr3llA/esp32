@@ -4,7 +4,7 @@
  */
 
 // State Management
-let currentRange = 'day';
+let currentRange = 'month';
 let selectedDate = null;
 let overviewChartInstance = null;
 let analyticsChartInstance = null;

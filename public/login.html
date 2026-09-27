@@ -356,23 +356,24 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                         
                         <!-- Hardware Card -->
-                        <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 space-y-3 flex flex-col justify-between w-full min-w-0">
+                       <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 space-y-3 flex flex-col justify-between w-full min-w-0">
     <div class="flex items-center justify-between gap-2">
         <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5 truncate">
             <i class="fa-solid fa-video text-indigo-600 shrink-0"></i> Demonstration Video
         </span>
         <span class="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100 shrink-0">ESP32-CAM Setup</span>
     </div>
+    
     <div class="w-full aspect-video bg-slate-100 rounded-xl overflow-hidden border border-slate-200 relative">
-        <iframe 
-            class="w-full h-full rounded-xl" 
-            src="https://www.youtube.com/embed/PIlgb7EScUc" 
-            title="Demonstration Video" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowfullscreen>
-        </iframe>
+        <video 
+            class="w-full h-full object-cover rounded-xl" 
+            controls 
+            playsinline>
+            <source src="https://res.cloudinary.com/dk3dwmnce/video/upload/v1790531162/InShot_20260920_060532879.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
+
     <p class="text-[11px] text-slate-500 text-justify">
         Hardware configuration with ESP32-CAM, DC conveyor belt, and servo robotic arm sorting mechanism.
     </p>
